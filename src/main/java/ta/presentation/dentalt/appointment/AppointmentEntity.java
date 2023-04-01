@@ -21,14 +21,14 @@ public class AppointmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "patient_id")
     private UserEntity patient;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "doctor_id")
     private UserEntity doctor;
-    @OneToOne
-    @Column(name = "operation_id")
+    @ManyToOne
+    @JoinColumn(name = "operation_id")
     private OperationEntity operation;
     @Column(name = "start_date_time")
     private LocalDateTime startDateTime;
