@@ -23,4 +23,6 @@ public class OperationEntity {
     private String description;
     @Column(name = "price")
     private Double price;
+    @Column(name = "valid")
+    private Boolean validity;
 }

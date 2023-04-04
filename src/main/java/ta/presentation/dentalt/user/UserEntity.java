@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ta.presentation.dentalt.appointment.AppointmentEntity;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -28,5 +29,8 @@ public class UserEntity {
     private String password;
     @Column(name = "roles")
     private String roles;
-
+    @Column(name = "joined_on")
+    private LocalDateTime joinedOn;
+    @Column(name = "valid")
+    private Boolean validity;
 }
