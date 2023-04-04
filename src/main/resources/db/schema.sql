@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS dentalt.operation
 (
     id integer NOT NULL,
     name character varying(25),
-    description character varying(25),
+    description text,
     price double precision,
     validity boolean NOT NULL DEFAULT 'TRUE',
     CONSTRAINT operation_pkey PRIMARY KEY (id)
