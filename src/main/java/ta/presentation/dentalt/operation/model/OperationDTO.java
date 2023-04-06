@@ -1,4 +1,4 @@
-package ta.presentation.dentalt.operation;
+package ta.presentation.dentalt.operation.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,4 +13,5 @@ public class OperationDTO {
     private String name;
     private String description;
     private Double price;
+    private Boolean validity;
 }

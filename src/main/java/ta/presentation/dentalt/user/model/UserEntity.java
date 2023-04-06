@@ -1,4 +1,4 @@
-package ta.presentation.dentalt.user;
+package ta.presentation.dentalt.user.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

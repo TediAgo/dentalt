@@ -1,4 +1,4 @@
-package ta.presentation.dentalt.enums;
+package ta.presentation.dentalt.user.model;
 
 public enum Roles {
 

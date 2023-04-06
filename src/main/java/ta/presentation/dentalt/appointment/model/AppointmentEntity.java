@@ -1,12 +1,12 @@
-package ta.presentation.dentalt.appointment;
+package ta.presentation.dentalt.appointment.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ta.presentation.dentalt.operation.OperationEntity;
-import ta.presentation.dentalt.user.UserEntity;
+import ta.presentation.dentalt.operation.model.OperationEntity;
+import ta.presentation.dentalt.user.model.UserEntity;
 
 import java.time.LocalDateTime;
 
@@ -23,13 +23,13 @@ public class AppointmentEntity {
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "patient_id")
-    private UserEntity patient;
+    private UserEntity patientEntity;
     @ManyToOne
     @JoinColumn(name = "doctor_id")
-    private UserEntity doctor;
+    private UserEntity doctorEntity;
     @ManyToOne
     @JoinColumn(name = "operation_id")
-    private OperationEntity operation;
+    private OperationEntity operationEntity;
     @Column(name = "start_date_time")
     private LocalDateTime startDateTime;
     @Column(name = "end_date_time")

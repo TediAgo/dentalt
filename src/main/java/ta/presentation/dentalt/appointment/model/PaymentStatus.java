@@ -1,4 +1,4 @@
-package ta.presentation.dentalt.enums;
+package ta.presentation.dentalt.appointment.model;
 
 public enum PaymentStatus {
 

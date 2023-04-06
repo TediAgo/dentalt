@@ -1,8 +1,10 @@
-package ta.presentation.dentalt.user;
+package ta.presentation.dentalt.user.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -15,4 +17,6 @@ public class UserDTO {
     private String email;
     private String password;
     private String roles;
+    private LocalDateTime joinedOn;
+    private Boolean validity;
 }

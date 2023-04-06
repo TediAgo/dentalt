@@ -1,11 +1,11 @@
-package ta.presentation.dentalt.appointment;
+package ta.presentation.dentalt.appointment.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ta.presentation.dentalt.operation.OperationRepository;
 
 @Service
-public class AppointmentServiceImplementation implements AppointmentService{
+public class AppointmentServiceImplementation implements AppointmentService {
 
     @Autowired
     private OperationRepository operationRepository;
