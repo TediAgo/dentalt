@@ -7,6 +7,7 @@ import ta.presentation.dentalt.user.model.UserEntity;
 import java.time.LocalDateTime;
 
 public class UserConverter {
+
     public static UserDTO convertUserEntityToDTO(UserEntity userEntity) {
         UserDTO userDTO = new UserDTO();
 
@@ -38,20 +39,14 @@ public class UserConverter {
     }
 
     protected static UserEntity createDoctorEntity(UserDTO userDTO) {
-        UserEntity doctorEntity = new UserEntity();
-
-        doctorEntity = UserConverter.createUserEntity(userDTO);
+        UserEntity doctorEntity = UserConverter.createUserEntity(userDTO);
         doctorEntity.setRoles(String.valueOf(Roles.DOCTOR));
-
         return doctorEntity;
     }
 
     protected static UserEntity createAdminEntity(UserDTO userDTO) {
-        UserEntity adminEntity = new UserEntity();
-
-        adminEntity = UserConverter.createUserEntity(userDTO);
+        UserEntity adminEntity = UserConverter.createUserEntity(userDTO);
         adminEntity.setRoles(String.valueOf(Roles.ADMIN));
-
         return adminEntity;
     }
 }

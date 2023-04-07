@@ -7,5 +7,4 @@ import ta.presentation.dentalt.user.model.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
-
 }
