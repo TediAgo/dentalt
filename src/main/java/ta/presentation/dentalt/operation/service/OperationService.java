@@ -12,13 +12,13 @@ public interface OperationService {
 
     OperationDTO createOperation(OperationDTO operationDTO);
 
-    Integer deleteOperation(Integer id);
-
-    OperationDTO restoreOperation(Integer id);
-
     OperationDTO changeOperationName(Integer id, String name);
 
     OperationDTO changeOperationDescription(Integer id, String description);
 
     OperationDTO changeOperationPrice(Integer id, Double price);
+
+    Integer deleteOperation(Integer id);
+
+    OperationDTO restoreOperation(Integer id);
 }

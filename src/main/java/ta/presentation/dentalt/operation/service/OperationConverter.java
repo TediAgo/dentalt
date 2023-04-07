@@ -2,6 +2,9 @@ package ta.presentation.dentalt.operation.service;
 
 import ta.presentation.dentalt.operation.model.OperationDTO;
 import ta.presentation.dentalt.operation.model.OperationEntity;
+import ta.presentation.dentalt.user.model.Roles;
+
+import java.util.Arrays;
 
 public class OperationConverter {
 
@@ -12,15 +15,18 @@ public class OperationConverter {
         operationDTO.setName(operationEntity.getName());
         operationDTO.setDescription(operationEntity.getDescription());
         operationDTO.setPrice(operationEntity.getPrice());
+        operationDTO.setValidity(operationEntity.getValidity());
 
         return operationDTO;
     }
 
-    public static OperationEntity convertOperationDTOToEntity(OperationDTO operationDTO) {
+    protected static OperationEntity createOperationEntity(OperationDTO operationDTO) {
         OperationEntity operationEntity = new OperationEntity();
 
         operationEntity.setName(operationDTO.getName());
         operationEntity.setDescription(operationDTO.getDescription());
+        operationEntity.setPrice(operationDTO.getPrice());
+        operationEntity.setValidity(Boolean.TRUE);
 
         return operationEntity;
     }

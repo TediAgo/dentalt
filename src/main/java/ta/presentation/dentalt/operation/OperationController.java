@@ -20,12 +20,12 @@ public class OperationController {
         return ResponseEntity.ok(operationService.getOperation(id));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<OperationDTO>> getAllOperations() {
         return ResponseEntity.ok(operationService.getAllOperations());
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<OperationDTO> createOperation(@RequestBody OperationDTO operationDTO) {
         return ResponseEntity.ok(operationService.createOperation(operationDTO));
     }
