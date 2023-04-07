@@ -28,7 +28,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getPatients() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getRoles().equals(Roles.PATIENT))
+                .filter(userEntity -> userEntity.getRoles().equals(String.valueOf(Roles.PATIENT)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -37,7 +37,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getDoctors() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getRoles().equals(Roles.DOCTOR))
+                .filter(userEntity -> userEntity.getRoles().equals(String.valueOf(Roles.DOCTOR)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -46,7 +46,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getAdmins() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getRoles().equals(Roles.ADMIN))
+                .filter(userEntity -> userEntity.getRoles().equals(String.valueOf(Roles.ADMIN)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
