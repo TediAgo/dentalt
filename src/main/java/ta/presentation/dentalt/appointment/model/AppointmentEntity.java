@@ -38,6 +38,6 @@ public class AppointmentEntity {
     private String completionStatus;
     @Column(name = "payment_status")
     private String paymentStatus;
-    @Column(name = "valid")
+    @Column(name = "validity")
     private Boolean validity;
 }

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class UserEntity {
 
     @Id
@@ -31,6 +31,6 @@ public class UserEntity {
     private String roles;
     @Column(name = "joined_on")
     private LocalDateTime joinedOn;
-    @Column(name = "valid")
+    @Column(name = "validity")
     private Boolean validity;
 }
