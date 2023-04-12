@@ -30,21 +30,21 @@ public class OperationController {
         return ResponseEntity.ok(operationService.createOperation(operationDTO));
     }
 
-    @PutMapping("/{id}/changeName/{name}")
+    @PutMapping("/{id}/changeName")
     public ResponseEntity<OperationDTO> changeOperationName(@PathVariable(value = "id") Integer id,
-                                                            @PathVariable(value = "name") String name) {
+                                                            @RequestBody String name) {
         return ResponseEntity.ok(operationService.changeOperationName(id, name));
     }
 
-    @PutMapping("/{id}/changeDescription/{description}")
+    @PutMapping("/{id}/changeDescription")
     public ResponseEntity<OperationDTO> changeOperationDescription(@PathVariable(value = "id") Integer id,
-                                                                   @PathVariable(value = "description") String description) {
+                                                                   @RequestBody String description) {
         return ResponseEntity.ok(operationService.changeOperationDescription(id, description));
     }
 
-    @PutMapping("/{id}/changePrice/{price}")
+    @PutMapping("/{id}/changePrice")
     public ResponseEntity<OperationDTO> changeOperationPrice(@PathVariable(value = "id") Integer id,
-                                                             @PathVariable(value = "price") Double price) {
+                                                             @RequestBody Double price) {
         return ResponseEntity.ok(operationService.changeOperationPrice(id, price));
     }
 
