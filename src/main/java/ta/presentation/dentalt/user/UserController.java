@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/allAdmins")
-    public ResponseEntity<List<UserDTO>> getAdminss() {
+    public ResponseEntity<List<UserDTO>> getAdmins() {
         return ResponseEntity.ok(userService.getAdmins());
     }
 
