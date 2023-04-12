@@ -17,7 +17,7 @@ public class OperationServiceImplementation implements OperationService {
 
     @Override
     public OperationDTO getOperation(Integer id) {
-        if (operationRepository.findById(id).isPresent()) {
+        if (operationRepository.findById(id).isPresent() && operationRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
             return OperationConverter.convertOperationEntityToDTO(operationRepository.findById(id).get());
         }
         return new OperationDTO();
@@ -27,20 +27,24 @@ public class OperationServiceImplementation implements OperationService {
     public List<OperationDTO> getAllOperations () {
         return operationRepository.findAll()
                 .stream()
+                .filter(operationEntity -> operationEntity.getValidity().equals(Boolean.TRUE))
                 .map(OperationConverter::convertOperationEntityToDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public OperationDTO createOperation(OperationDTO operationDTO) {
-        OperationEntity operationEntityToPersist = OperationConverter.createOperationEntity(operationDTO);
-        operationRepository.save(operationEntityToPersist);
-        return OperationConverter.convertOperationEntityToDTO(operationEntityToPersist);
+        if (operationRepository.findById(operationDTO.getId()).isEmpty()) {
+            OperationEntity operationEntityToPersist = OperationConverter.createOperationEntity(operationDTO);
+            operationRepository.save(operationEntityToPersist);
+            return OperationConverter.convertOperationEntityToDTO(operationEntityToPersist);
+        }
+        return new OperationDTO();
     }
 
     @Override
     public OperationDTO changeOperationName(Integer id, String name) {
-        if (operationRepository.findById(id).isPresent()) {
+        if (operationRepository.findById(id).isPresent() && operationRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
             OperationEntity operationEntityToChangeName = operationRepository.findById(id).get();
             operationEntityToChangeName.setName(name);
             operationRepository.save(operationEntityToChangeName);
@@ -51,7 +55,7 @@ public class OperationServiceImplementation implements OperationService {
 
     @Override
     public OperationDTO changeOperationDescription(Integer id, String description) {
-        if (operationRepository.findById(id).isPresent()) {
+        if (operationRepository.findById(id).isPresent() && operationRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
             OperationEntity operationEntityToChangeDescription = operationRepository.findById(id).get();
             operationEntityToChangeDescription.setDescription(description);
             operationRepository.save(operationEntityToChangeDescription);
@@ -62,7 +66,7 @@ public class OperationServiceImplementation implements OperationService {
 
     @Override
     public OperationDTO changeOperationPrice(Integer id, Double price) {
-        if (operationRepository.findById(id).isPresent()) {
+        if (operationRepository.findById(id).isPresent() && operationRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
             OperationEntity operationEntityToChangePrice = operationRepository.findById(id).get();
             operationEntityToChangePrice.setPrice(price);
             operationRepository.save(operationEntityToChangePrice);
@@ -73,7 +77,7 @@ public class OperationServiceImplementation implements OperationService {
 
     @Override
     public Integer deleteOperation(Integer id) {
-        if (operationRepository.findById(id).isPresent()) {
+        if (operationRepository.findById(id).isPresent() && operationRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
             OperationEntity operationEntityToDelete = operationRepository.findById(id).get();
             operationEntityToDelete.setValidity(Boolean.FALSE);
             operationRepository.save(operationEntityToDelete);

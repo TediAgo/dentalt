@@ -18,7 +18,7 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDTO getUser(Integer id) {
-        if (userRepository.findById(id).isPresent()) {
+        if (userRepository.findById(id).isPresent()  && userRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
             return UserConverter.convertUserEntityToDTO(userRepository.findById(id).get());
         }
         return new UserDTO();
@@ -28,7 +28,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getPatients() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getRoles().equals(String.valueOf(Roles.PATIENT)))
+                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equals(String.valueOf(Roles.PATIENT)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -37,7 +37,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getDoctors() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getRoles().equals(String.valueOf(Roles.DOCTOR)))
+                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equals(String.valueOf(Roles.DOCTOR)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -46,35 +46,44 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getAdmins() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getRoles().equals(String.valueOf(Roles.ADMIN)))
+                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equals(String.valueOf(Roles.ADMIN)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public UserDTO createPatient(UserDTO userDTO) {
-        UserEntity userPatientEntityToPersist = UserConverter.createUserEntity(userDTO);
-        userRepository.save(userPatientEntityToPersist);
-        return UserConverter.convertUserEntityToDTO(userPatientEntityToPersist);
+        if (userRepository.findById(userDTO.getId()).isEmpty()) {
+            UserEntity userPatientEntityToPersist = UserConverter.createUserEntity(userDTO);
+            userRepository.save(userPatientEntityToPersist);
+            return UserConverter.convertUserEntityToDTO(userPatientEntityToPersist);
+        }
+        return new UserDTO();
     }
 
     @Override
     public UserDTO createDoctor(UserDTO userDTO) {
-        UserEntity userDoctorEntityToPersist = UserConverter.createDoctorEntity(userDTO);
-        userRepository.save(userDoctorEntityToPersist);
-        return UserConverter.convertUserEntityToDTO(userDoctorEntityToPersist);
+        if (userRepository.findById(userDTO.getId()).isEmpty()) {
+            UserEntity userDoctorEntityToPersist = UserConverter.createDoctorEntity(userDTO);
+            userRepository.save(userDoctorEntityToPersist);
+            return UserConverter.convertUserEntityToDTO(userDoctorEntityToPersist);
+        }
+        return new UserDTO();
     }
 
     @Override
     public UserDTO createAdmin(UserDTO userDTO) {
-       UserEntity userAdminToPersist = UserConverter.createAdminEntity(userDTO);
-       userRepository.save(userAdminToPersist);
-       return UserConverter.convertUserEntityToDTO(userAdminToPersist);
+        if (userRepository.findById(userDTO.getId()).isEmpty()) {
+            UserEntity userAdminToPersist = UserConverter.createAdminEntity(userDTO);
+            userRepository.save(userAdminToPersist);
+            return UserConverter.convertUserEntityToDTO(userAdminToPersist);
+        }
+        return new UserDTO();
     }
 
     @Override
     public Integer deleteUser(Integer id) {
-        if(userRepository.findById(id).isPresent()) {
+        if(userRepository.findById(id).isPresent() && userRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
             UserEntity userEntityToDelete = userRepository.findById(id).get();
             userEntityToDelete.setValidity(Boolean.FALSE);
             userRepository.save(userEntityToDelete);
