@@ -17,7 +17,7 @@ public class OperationConverter {
         return operationDTO;
     }
 
-    protected static OperationEntity createOperationEntity(OperationDTO operationDTO) {
+    public static OperationEntity createOperationEntity(OperationDTO operationDTO) {
         OperationEntity operationEntity = new OperationEntity();
 
         operationEntity.setName(operationDTO.getName());

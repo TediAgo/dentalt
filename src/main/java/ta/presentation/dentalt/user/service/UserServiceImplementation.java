@@ -28,7 +28,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getPatients() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equals(String.valueOf(Roles.PATIENT)))
+                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equalsIgnoreCase(String.valueOf(Roles.PATIENT)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -37,7 +37,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getDoctors() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equals(String.valueOf(Roles.DOCTOR)))
+                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equalsIgnoreCase(String.valueOf(Roles.DOCTOR)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -46,39 +46,30 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getAdmins() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equals(String.valueOf(Roles.ADMIN)))
+                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equalsIgnoreCase(String.valueOf(Roles.ADMIN)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public UserDTO createPatient(UserDTO userDTO) {
-        if (userRepository.findById(userDTO.getId()).isEmpty()) {
-            UserEntity userPatientEntityToPersist = UserConverter.createUserEntity(userDTO);
-            userRepository.save(userPatientEntityToPersist);
-            return UserConverter.convertUserEntityToDTO(userPatientEntityToPersist);
-        }
-        return new UserDTO();
+        UserEntity userPatientEntityToPersist = UserConverter.createUserEntity(userDTO);
+        userRepository.save(userPatientEntityToPersist);
+        return UserConverter.convertUserEntityToDTO(userPatientEntityToPersist);
     }
 
     @Override
     public UserDTO createDoctor(UserDTO userDTO) {
-        if (userRepository.findById(userDTO.getId()).isEmpty()) {
-            UserEntity userDoctorEntityToPersist = UserConverter.createDoctorEntity(userDTO);
-            userRepository.save(userDoctorEntityToPersist);
-            return UserConverter.convertUserEntityToDTO(userDoctorEntityToPersist);
-        }
-        return new UserDTO();
+        UserEntity userDoctorEntityToPersist = UserConverter.createDoctorEntity(userDTO);
+        userRepository.save(userDoctorEntityToPersist);
+        return UserConverter.convertUserEntityToDTO(userDoctorEntityToPersist);
     }
 
     @Override
     public UserDTO createAdmin(UserDTO userDTO) {
-        if (userRepository.findById(userDTO.getId()).isEmpty()) {
-            UserEntity userAdminToPersist = UserConverter.createAdminEntity(userDTO);
-            userRepository.save(userAdminToPersist);
-            return UserConverter.convertUserEntityToDTO(userAdminToPersist);
-        }
-        return new UserDTO();
+        UserEntity userAdminToPersist = UserConverter.createAdminEntity(userDTO);
+        userRepository.save(userAdminToPersist);
+        return UserConverter.convertUserEntityToDTO(userAdminToPersist);
     }
 
     @Override

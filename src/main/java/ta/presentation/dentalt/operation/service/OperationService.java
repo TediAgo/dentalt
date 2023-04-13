@@ -12,6 +12,8 @@ public interface OperationService {
 
     OperationDTO createOperation(OperationDTO operationDTO);
 
+    OperationDTO changeOperation(OperationDTO operationDTO);
+
     OperationDTO changeOperationName(Integer id, String name);
 
     OperationDTO changeOperationDescription(Integer id, String description);

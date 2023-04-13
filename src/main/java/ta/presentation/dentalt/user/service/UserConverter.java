@@ -23,7 +23,7 @@ public class UserConverter {
         return userDTO;
     }
 
-    protected static UserEntity createUserEntity(UserDTO userDTO) {
+    public static UserEntity createUserEntity(UserDTO userDTO) {
         UserEntity userEntity = new UserEntity();
 
         userEntity.setFirstName(userDTO.getFirstName());
@@ -38,13 +38,13 @@ public class UserConverter {
         return userEntity;
     }
 
-    protected static UserEntity createDoctorEntity(UserDTO userDTO) {
+    public static UserEntity createDoctorEntity(UserDTO userDTO) {
         UserEntity doctorEntity = UserConverter.createUserEntity(userDTO);
         doctorEntity.setRoles(String.valueOf(Roles.DOCTOR));
         return doctorEntity;
     }
 
-    protected static UserEntity createAdminEntity(UserDTO userDTO) {
+    public static UserEntity createAdminEntity(UserDTO userDTO) {
         UserEntity adminEntity = UserConverter.createUserEntity(userDTO);
         adminEntity.setRoles(String.valueOf(Roles.ADMIN));
         return adminEntity;

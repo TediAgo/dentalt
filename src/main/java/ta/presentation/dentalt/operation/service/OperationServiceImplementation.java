@@ -34,10 +34,21 @@ public class OperationServiceImplementation implements OperationService {
 
     @Override
     public OperationDTO createOperation(OperationDTO operationDTO) {
-        if (operationRepository.findById(operationDTO.getId()).isEmpty()) {
-            OperationEntity operationEntityToPersist = OperationConverter.createOperationEntity(operationDTO);
-            operationRepository.save(operationEntityToPersist);
-            return OperationConverter.convertOperationEntityToDTO(operationEntityToPersist);
+        OperationEntity operationEntityToPersist = OperationConverter.createOperationEntity(operationDTO);
+        operationRepository.save(operationEntityToPersist);
+        return OperationConverter.convertOperationEntityToDTO(operationEntityToPersist);
+
+    }
+
+    @Override
+    public OperationDTO changeOperation(OperationDTO operationDTO) {
+        if (operationRepository.findById(operationDTO.getId()).isPresent() && operationRepository.findById(operationDTO.getId()).get().getValidity().equals(Boolean.TRUE)) {
+            OperationEntity operationEntityToChange = operationRepository.findById(operationDTO.getId()).get();
+            operationEntityToChange.setName(operationDTO.getName());
+            operationEntityToChange.setDescription(operationDTO.getDescription());
+            operationEntityToChange.setPrice(operationDTO.getPrice());
+            operationRepository.save(operationEntityToChange);
+            return OperationConverter.convertOperationEntityToDTO(operationEntityToChange);
         }
         return new OperationDTO();
     }

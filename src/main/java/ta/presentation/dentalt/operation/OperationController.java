@@ -30,6 +30,11 @@ public class OperationController {
         return ResponseEntity.ok(operationService.createOperation(operationDTO));
     }
 
+    @PutMapping("/change")
+    public ResponseEntity<OperationDTO> changeOperation(@RequestBody OperationDTO operationDTO) {
+        return ResponseEntity.ok(operationService.changeOperation(operationDTO));
+    }
+
     @PutMapping("/{id}/changeName")
     public ResponseEntity<OperationDTO> changeOperationName(@PathVariable(value = "id") Integer id,
                                                             @RequestBody String name) {

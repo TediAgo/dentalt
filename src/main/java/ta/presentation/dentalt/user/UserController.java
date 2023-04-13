@@ -35,7 +35,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getAdmins());
     }
 
-    @PostMapping("/createClient")
+    @PostMapping("/createPatient")
     public ResponseEntity<UserDTO> createPatient(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(userService.createPatient(userDTO));
     }
@@ -52,8 +52,6 @@ public class UserController {
 
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<Integer> deleteUser(@PathVariable(value = "id") Integer id) {
-        //userService.deleteUser(id);
-        //return ResponseEntity.noContent().build();
         return ResponseEntity.ok(userService.deleteUser(id));
     }
 
