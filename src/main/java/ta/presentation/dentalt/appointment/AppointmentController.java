@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ta.presentation.dentalt.appointment.model.AppointmentDTO;
 import ta.presentation.dentalt.appointment.service.AppointmentService;
-import ta.presentation.dentalt.operation.model.OperationDTO;
 
 import java.util.List;
 
@@ -27,13 +26,13 @@ public class AppointmentController {
     }
 
     @PostMapping("/createForPatient")
-    public ResponseEntity<AppointmentDTO> createAppointment() {
-        return ResponseEntity.ok(appointmentService.createAppointment());
+    public ResponseEntity<AppointmentDTO> createAppointmentForPatient() {
+        return ResponseEntity.ok(appointmentService.createAppointmentForPatient());
     }
 
     @PostMapping("/createForDoctor")
-    public ResponseEntity<AppointmentDTO> createAppointment() {
-        return ResponseEntity.ok(appointmentService.createAppointment());
+    public ResponseEntity<AppointmentDTO> createAppointmentForDoctor() {
+        return ResponseEntity.ok(appointmentService.createAppointmentForDoctor());
     }
 
     @DeleteMapping("/{id}/delete")
@@ -42,7 +41,7 @@ public class AppointmentController {
     }
 
     @PutMapping("/{id}/restore")
-    public ResponseEntity<OperationDTO> restoreAppointment(@PathVariable(value = "id") Integer id) {
+    public ResponseEntity<AppointmentDTO> restoreAppointment(@PathVariable(value = "id") Integer id) {
         return ResponseEntity.ok(appointmentService.restoreAppointment(id));
     }
 }
