@@ -37,7 +37,6 @@ public class OperationServiceImplementation implements OperationService {
         OperationEntity operationEntityToPersist = OperationConverter.createOperationEntity(operationDTO);
         operationRepository.save(operationEntityToPersist);
         return OperationConverter.convertOperationEntityToDTO(operationEntityToPersist);
-
     }
 
     @Override

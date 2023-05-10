@@ -24,5 +24,5 @@ public class OperationEntity {
     @Column(name = "price")
     private Double price;
     @Column(name = "validity")
-    private Boolean validity;
+    private Boolean validity = Boolean.TRUE;
 }

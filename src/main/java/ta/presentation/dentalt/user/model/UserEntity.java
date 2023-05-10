@@ -32,5 +32,5 @@ public class UserEntity {
     @Column(name = "joined_on")
     private LocalDateTime joinedOn;
     @Column(name = "validity")
-    private Boolean validity;
+    private Boolean validity = Boolean.TRUE;
 }
