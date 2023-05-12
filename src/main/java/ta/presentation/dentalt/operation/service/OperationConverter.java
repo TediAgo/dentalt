@@ -12,7 +12,6 @@ public class OperationConverter {
         operationDTO.setName(operationEntity.getName());
         operationDTO.setDescription(operationEntity.getDescription());
         operationDTO.setPrice(operationEntity.getPrice());
-        operationDTO.setValidity(operationEntity.getValidity());
 
         return operationDTO;
     }

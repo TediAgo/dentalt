@@ -55,8 +55,6 @@ public class OperationController {
 
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<Integer> deleteOperation(@PathVariable(value = "id") Integer id) {
-        //operationService.deleteOperation(id);
-        //return ResponseEntity.noContent().build();
         return ResponseEntity.ok(operationService.deleteOperation(id));
     }
 

@@ -9,13 +9,19 @@ public interface AppointmentService {
 
     AppointmentDTO getAppointment(Integer id);
 
-    List<AppointmentDTO> getUserAppointment(Integer userId);
+    /*List<AppointmentDTO> getAllMyAppointments();
 
-    AppointmentDTO createAppointmentForPatient();
+    List<AppointmentDTO> getAllUncompletedUserAppointments();
 
-    AppointmentDTO createAppointmentForDoctor();
+    List<AppointmentDTO> getAllCompletedUserAppointments();*/
+
+    List<AppointmentDTO> getAllDeletedAppointments();
+
+    List<AppointmentDTO> getAllAppointments();
+
+    AppointmentDTO applyForAppointmentByPatient();
+
+    AppointmentDTO createAppointmentByDoctor();
 
     Integer deleteAppointment(Integer id);
-
-    AppointmentDTO restoreAppointment(Integer id);
 }
