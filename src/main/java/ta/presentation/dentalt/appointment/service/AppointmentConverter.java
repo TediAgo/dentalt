@@ -17,6 +17,7 @@ public class AppointmentConverter {
         appointmentDTO.setPaymentStatus(appointmentEntity.getPaymentStatus());
         appointmentDTO.setPatient(UserConverter.populateUserAppointmentDTO(appointmentEntity.getPatientEntity()));
         appointmentDTO.setDoctor(UserConverter.populateUserAppointmentDTO(appointmentEntity.getDoctorEntity()));
+        appointmentDTO.setValidity(Boolean.TRUE);
 
         return appointmentDTO;
     }

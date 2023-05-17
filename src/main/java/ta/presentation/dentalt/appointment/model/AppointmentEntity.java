@@ -39,5 +39,5 @@ public class AppointmentEntity {
     @Column(name = "payment_status")
     private String paymentStatus;
     @Column(name = "validity")
-    private Boolean validity = Boolean.TRUE;
+    private Boolean validity;
 }
