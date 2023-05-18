@@ -14,8 +14,6 @@ public interface UserService {
 
     List<UserDTO> getAdmins();
 
-    UserDTO createPatient(UserDTO userDTO);
-
     UserDTO createDoctor(UserDTO userDTO);
 
     UserDTO createAdmin(UserDTO userDTO);

@@ -52,24 +52,25 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public UserDTO createPatient(UserDTO userDTO) {
-        UserEntity userPatientEntityToPersist = UserConverter.createUserEntity(userDTO);
-        userRepository.save(userPatientEntityToPersist);
-        return UserConverter.convertUserEntityToDTO(userPatientEntityToPersist);
-    }
-
-    @Override
     public UserDTO createDoctor(UserDTO userDTO) {
-        UserEntity userDoctorEntityToPersist = UserConverter.createDoctorEntity(userDTO);
-        userRepository.save(userDoctorEntityToPersist);
-        return UserConverter.convertUserEntityToDTO(userDoctorEntityToPersist);
+        if(userRepository.findById(userDTO.getId()).isPresent() && userRepository.findById(userDTO.getId()).get().getValidity().equals(Boolean.TRUE)) {
+            UserEntity userToDoctor = userRepository.findById(userDTO.getId()).get();
+            userToDoctor.setRoles(String.valueOf(Roles.DOCTOR));
+            userRepository.save(userToDoctor);
+            return UserConverter.convertUserEntityToDTO(userToDoctor);
+        }
+        return new UserDTO();
     }
 
     @Override
     public UserDTO createAdmin(UserDTO userDTO) {
-        UserEntity userAdminToPersist = UserConverter.createAdminEntity(userDTO);
-        userRepository.save(userAdminToPersist);
-        return UserConverter.convertUserEntityToDTO(userAdminToPersist);
+        if(userRepository.findById(userDTO.getId()).isPresent() && userRepository.findById(userDTO.getId()).get().getValidity().equals(Boolean.TRUE)) {
+            UserEntity userToAdmin = userRepository.findById(userDTO.getId()).get();
+            userToAdmin.setRoles(String.valueOf(Roles.ADMIN));
+            userRepository.save(userToAdmin);
+            return UserConverter.convertUserEntityToDTO(userToAdmin);
+        }
+        return new UserDTO();
     }
 
     @Override
