@@ -17,7 +17,8 @@ public class OperationController {
     private OperationService operationService;
 
     @GetMapping("/{id}")
-    @PreAuthorize(value = "hasAnyAuthority('ADMIN', 'DOCTOR', 'PATIENT')")
+    @PreAuthorize(value = "hasAnyAuthority()")
+    //@PreAuthorize(value = "hasAnyRole('ROLE_ADMIN', 'ROLE_DOCTOR', 'ROLE_PATIENT')")
     public ResponseEntity<OperationDTO> getOperation(@PathVariable(value = "id") Integer id) {
         return ResponseEntity.ok(operationService.getOperation(id));
     }

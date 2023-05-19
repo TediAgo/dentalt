@@ -24,7 +24,8 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/home").permitAll()
+                .requestMatchers("/home/**").permitAll()
+                .requestMatchers("/operations/**").hasAnyAuthority("PATIENT")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
