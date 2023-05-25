@@ -1,7 +1,9 @@
 package ta.presentation.dentalt.appointment.service;
 
 import ta.presentation.dentalt.appointment.model.AppointmentDTO;
+import ta.presentation.dentalt.appointment.model.NewDateDTO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AppointmentService {
@@ -9,19 +11,29 @@ public interface AppointmentService {
 
     AppointmentDTO getAppointment(Integer id);
 
-    /*List<AppointmentDTO> getAllMyAppointments();
+    List<AppointmentDTO> getPatientUncompletedAppointments(Integer patientId);
 
-    List<AppointmentDTO> getAllUncompletedUserAppointments();
+    List<AppointmentDTO> getPatientUnpaidAppointments(Integer patientId);
 
-    List<AppointmentDTO> getAllCompletedUserAppointments();*/
+    List<AppointmentDTO> getAllMyAppointments();
 
-    List<AppointmentDTO> getAllDeletedAppointments();
+    List<AppointmentDTO> getAllMyCompletedAppointments();
 
-    List<AppointmentDTO> getAllAppointments();
+    List<AppointmentDTO> getAllMyUncompletedAppointments();
 
-    AppointmentDTO applyForAppointmentByPatient();
+    List<AppointmentDTO> getAllMyPaidAppointments();
 
-    AppointmentDTO createAppointmentByDoctor();
+    List<AppointmentDTO> getAllMyUnpaidAppointments();
+
+    List<AppointmentDTO> getAllMyAppointmentsByDate(LocalDateTime date);
+
+    List<AppointmentDTO> getAllMyNextAppointments();
+
+    AppointmentDTO applyForAppointmentByPatient(AppointmentDTO appointmentDTO);
+
+    AppointmentDTO createAppointmentByDoctor(AppointmentDTO appointmentDTO);
+
+    AppointmentDTO changeDate(Integer id, NewDateDTO newDate);
 
     Integer deleteAppointment(Integer id);
 }

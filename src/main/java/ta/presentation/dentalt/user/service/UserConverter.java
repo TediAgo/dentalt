@@ -13,7 +13,7 @@ public class UserConverter {
         userDTO.setFirstName(userEntity.getFirstName());
         userDTO.setLastName(userEntity.getLastName());
         userDTO.setEmail(userEntity.getEmail());
-        userDTO.setRoles(userEntity.getRoles());
+        userDTO.setRoles(userEntity.getRole());
         userDTO.setJoinedOn(userEntity.getJoinedOn());
 
         return userDTO;

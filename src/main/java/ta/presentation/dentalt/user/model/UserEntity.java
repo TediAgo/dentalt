@@ -6,8 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ta.presentation.dentalt.security.token.Token;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -32,16 +32,19 @@ public class UserEntity implements UserDetails {
     private String email;
     @Column(name = "password")
     private String password;
-    @Column(name = "roles")
-    private String roles;
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
     @Column(name = "joined_on")
     private LocalDateTime joinedOn;
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
     @Column(name = "validity")
     private Boolean validity;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(roles));
+        return role.getAuthorities();
     }
 
     @Override

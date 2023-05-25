@@ -3,7 +3,7 @@ package ta.presentation.dentalt.user.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ta.presentation.dentalt.user.UserRepository;
-import ta.presentation.dentalt.user.model.Roles;
+import ta.presentation.dentalt.user.model.Role;
 import ta.presentation.dentalt.user.model.UserDTO;
 import ta.presentation.dentalt.user.model.UserEntity;
 
@@ -28,7 +28,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getPatients() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equalsIgnoreCase(String.valueOf(Roles.PATIENT)))
+                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equalsIgnoreCase(String.valueOf(Role.PATIENT)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -37,7 +37,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getDoctors() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equalsIgnoreCase(String.valueOf(Roles.DOCTOR)))
+                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equalsIgnoreCase(String.valueOf(Role.DOCTOR)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -46,7 +46,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getAdmins() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equalsIgnoreCase(String.valueOf(Roles.ADMIN)))
+                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equalsIgnoreCase(String.valueOf(Role.ADMIN)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -55,7 +55,7 @@ public class UserServiceImplementation implements UserService {
     public UserDTO createDoctor(UserDTO userDTO) {
         if(userRepository.findById(userDTO.getId()).isPresent() && userRepository.findById(userDTO.getId()).get().getValidity().equals(Boolean.TRUE)) {
             UserEntity userToDoctor = userRepository.findById(userDTO.getId()).get();
-            userToDoctor.setRoles(String.valueOf(Roles.DOCTOR));
+            userToDoctor.setRoles(String.valueOf(Role.DOCTOR));
             userRepository.save(userToDoctor);
             return UserConverter.convertUserEntityToDTO(userToDoctor);
         }
@@ -66,7 +66,7 @@ public class UserServiceImplementation implements UserService {
     public UserDTO createAdmin(UserDTO userDTO) {
         if(userRepository.findById(userDTO.getId()).isPresent() && userRepository.findById(userDTO.getId()).get().getValidity().equals(Boolean.TRUE)) {
             UserEntity userToAdmin = userRepository.findById(userDTO.getId()).get();
-            userToAdmin.setRoles(String.valueOf(Roles.ADMIN));
+            userToAdmin.setRoles(String.valueOf(Role.ADMIN));
             userRepository.save(userToAdmin);
             return UserConverter.convertUserEntityToDTO(userToAdmin);
         }

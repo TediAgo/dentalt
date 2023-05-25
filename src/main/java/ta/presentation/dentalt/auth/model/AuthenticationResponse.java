@@ -13,5 +13,6 @@ public class AuthenticationResponse {
 
     private String email;
     private String roles;
-    private String token;
+    private String accessToken;
+    private String refreshToken;
 }

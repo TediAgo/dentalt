@@ -20,5 +20,4 @@ public class AppointmentDTO {
     private LocalDateTime endDateTime;
     private String completionStatus;
     private String paymentStatus;
-    private Boolean validity;
 }
