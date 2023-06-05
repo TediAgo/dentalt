@@ -32,7 +32,7 @@ public class UserEntity implements UserDetails {
     private String email;
     @Column(name = "password")
     private String password;
-    @Column(name = "role")
+    @Column(name = "roles")
     @Enumerated(EnumType.STRING)
     private Role role;
     @Column(name = "joined_on")

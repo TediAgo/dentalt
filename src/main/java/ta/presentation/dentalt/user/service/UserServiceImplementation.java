@@ -28,7 +28,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getPatients() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equalsIgnoreCase(String.valueOf(Role.PATIENT)))
+                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRole().equals(String.valueOf(Role.PATIENT)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -37,7 +37,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getDoctors() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equalsIgnoreCase(String.valueOf(Role.DOCTOR)))
+                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRole().equals(String.valueOf(Role.DOCTOR)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -46,7 +46,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getAdmins() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRoles().equalsIgnoreCase(String.valueOf(Role.ADMIN)))
+                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRole().equals(String.valueOf(Role.ADMIN)))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -55,7 +55,7 @@ public class UserServiceImplementation implements UserService {
     public UserDTO createDoctor(UserDTO userDTO) {
         if(userRepository.findById(userDTO.getId()).isPresent() && userRepository.findById(userDTO.getId()).get().getValidity().equals(Boolean.TRUE)) {
             UserEntity userToDoctor = userRepository.findById(userDTO.getId()).get();
-            userToDoctor.setRoles(String.valueOf(Role.DOCTOR));
+            userToDoctor.setRole(Role.DOCTOR);
             userRepository.save(userToDoctor);
             return UserConverter.convertUserEntityToDTO(userToDoctor);
         }
@@ -66,7 +66,7 @@ public class UserServiceImplementation implements UserService {
     public UserDTO createAdmin(UserDTO userDTO) {
         if(userRepository.findById(userDTO.getId()).isPresent() && userRepository.findById(userDTO.getId()).get().getValidity().equals(Boolean.TRUE)) {
             UserEntity userToAdmin = userRepository.findById(userDTO.getId()).get();
-            userToAdmin.setRoles(String.valueOf(Role.ADMIN));
+            userToAdmin.setRole(Role.ADMIN);
             userRepository.save(userToAdmin);
             return UserConverter.convertUserEntityToDTO(userToAdmin);
         }
