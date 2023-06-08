@@ -98,7 +98,7 @@ public class OperationServiceImplementation implements OperationService {
 
     @Override
     public OperationDTO restoreOperation(Integer id) {
-        if (operationRepository.findById(id).isPresent()) {
+        if (operationRepository.findById(id).isPresent() && operationRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
             OperationEntity operationEntityToRestore = operationRepository.findById(id).get();
             operationEntityToRestore.setValidity(Boolean.TRUE);
             operationRepository.save(operationEntityToRestore);

@@ -18,6 +18,6 @@ public class AppointmentDTO {
     private String operationName;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
-    private String completionStatus;
-    private String paymentStatus;
+    private CompletionStatus completionStatus;
+    private PaymentStatus paymentStatus;
 }

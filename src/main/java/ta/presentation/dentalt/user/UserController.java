@@ -46,18 +46,18 @@ public class UserController {
         return ResponseEntity.ok(userService.getAdmins());
     }
 
-    @PostMapping("/createDoctor")
+    @PostMapping("/createDoctor/{id}")
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAnyAuthority('admin:create')")
-    public ResponseEntity<UserDTO> createDoctor(@NonNull @RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(userService.createDoctor(userDTO));
+    public ResponseEntity<UserDTO> createDoctor(@NonNull @PathVariable (value = "id") Integer id) {
+        return ResponseEntity.ok(userService.createDoctor(id));
     }
 
-    @PostMapping("/createAdmin")
+    @PostMapping("/createAdmin/{id}")
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAnyAuthority('admin:create')")
-    public ResponseEntity<UserDTO> createAdmin(@NonNull @RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(userService.createAdmin(userDTO));
+    public ResponseEntity<UserDTO> createAdmin(@NonNull @PathVariable (value = "id") Integer id) {
+        return ResponseEntity.ok(userService.createAdmin(id));
     }
 
     /*@DeleteMapping("/{id}/delete")
