@@ -2,6 +2,7 @@ package ta.presentation.dentalt.appointment;
 
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -79,7 +80,8 @@ public class AppointmentController {
     @GetMapping("/all/{date}")
     //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
-    public ResponseEntity<List<AppointmentDTO>> getAllMyAppointmentsByDate(@NonNull @PathVariable(value = "date") LocalDateTime date) {
+    public ResponseEntity<List<AppointmentDTO>> getAllMyAppointmentsByDate(
+            @NonNull @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
         return ResponseEntity.ok(appointmentService.getAllMyAppointmentsByDate(date));
     }
 
