@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import ta.presentation.dentalt.appointment.model.AppointmentDTO;
 import ta.presentation.dentalt.appointment.model.NewDateDTO;
 import ta.presentation.dentalt.appointment.service.AppointmentService;
+import ta.presentation.dentalt.security.token.TokenDetails;
+import ta.presentation.dentalt.security.token.TokenUtility;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,35 +48,40 @@ public class AppointmentController {
     //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyAppointments() {
-        return ResponseEntity.ok(appointmentService.getAllMyAppointments());
+        TokenDetails token = TokenUtility.getDetails();
+        return ResponseEntity.ok(appointmentService.getAllMyAppointments(token.getEmail()));
     }
 
     @GetMapping("/allMyCompleted")
     //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyCompletedAppointments() {
-        return ResponseEntity.ok(appointmentService.getAllMyCompletedAppointments());
+        TokenDetails token = TokenUtility.getDetails();
+        return ResponseEntity.ok(appointmentService.getAllMyCompletedAppointments(token.getEmail()));
     }
 
     @GetMapping("/allMyUncompleted")
     //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyUncompletedAppointments() {
-        return ResponseEntity.ok(appointmentService.getAllMyUncompletedAppointments());
+        TokenDetails token = TokenUtility.getDetails();
+        return ResponseEntity.ok(appointmentService.getAllMyUncompletedAppointments(token.getEmail()));
     }
 
     @GetMapping("/allMyPaid")
     //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyPaidAppointments() {
-        return ResponseEntity.ok(appointmentService.getAllMyPaidAppointments());
+        TokenDetails token = TokenUtility.getDetails();
+        return ResponseEntity.ok(appointmentService.getAllMyPaidAppointments(token.getEmail()));
     }
 
     @GetMapping("/allMyUnpaid")
     //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyUnpaidAppointments() {
-        return ResponseEntity.ok(appointmentService.getAllMyUnpaidAppointments());
+        TokenDetails token = TokenUtility.getDetails();
+        return ResponseEntity.ok(appointmentService.getAllMyUnpaidAppointments(token.getEmail()));
     }
 
     @GetMapping("/all/{date}")
@@ -82,14 +89,16 @@ public class AppointmentController {
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyAppointmentsByDate(
             @NonNull @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
-        return ResponseEntity.ok(appointmentService.getAllMyAppointmentsByDate(date));
+        TokenDetails token = TokenUtility.getDetails();
+        return ResponseEntity.ok(appointmentService.getAllMyAppointmentsByDate(token.getEmail(), date));
     }
 
     @GetMapping("/allMylNext")
     //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyNextAppointments() {
-        return ResponseEntity.ok(appointmentService.getAllMyNextAppointments());
+        TokenDetails token = TokenUtility.getDetails();
+        return ResponseEntity.ok(appointmentService.getAllMyNextAppointments(token.getEmail()));
     }
 
     @PostMapping("/createByPatient")

@@ -15,19 +15,19 @@ public interface AppointmentService {
 
     List<AppointmentDTO> getPatientUnpaidAppointments(Integer patientId);
 
-    List<AppointmentDTO> getAllMyAppointments();
+    List<AppointmentDTO> getAllMyAppointments(String loggedEmail);
 
-    List<AppointmentDTO> getAllMyCompletedAppointments();
+    List<AppointmentDTO> getAllMyCompletedAppointments(String loggedEmail);
 
-    List<AppointmentDTO> getAllMyUncompletedAppointments();
+    List<AppointmentDTO> getAllMyUncompletedAppointments(String loggedEmail);
 
-    List<AppointmentDTO> getAllMyPaidAppointments();
+    List<AppointmentDTO> getAllMyPaidAppointments(String loggedEmail);
 
-    List<AppointmentDTO> getAllMyUnpaidAppointments();
+    List<AppointmentDTO> getAllMyUnpaidAppointments(String loggedEmail);
 
-    List<AppointmentDTO> getAllMyAppointmentsByDate(LocalDateTime date);
+    List<AppointmentDTO> getAllMyAppointmentsByDate(String loggedEmail, LocalDateTime date);
 
-    List<AppointmentDTO> getAllMyNextAppointments();
+    List<AppointmentDTO> getAllMyNextAppointments(String loggedEmail);
 
     AppointmentDTO applyForAppointmentByPatient(AppointmentDTO appointmentDTO);
 
