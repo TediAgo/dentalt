@@ -35,9 +35,11 @@ public class AppointmentEntity {
     @Column(name = "end_date_time")
     private LocalDateTime endDateTime;
     @Column(name = "completion_status")
-    private String completionStatus;
+    @Enumerated(EnumType.STRING)
+    private CompletionStatus completionStatus;
     @Column(name = "payment_status")
-    private String paymentStatus;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
     @Column(name = "validity")
-    private Boolean validity = Boolean.TRUE;
+    private Boolean validity;
 }

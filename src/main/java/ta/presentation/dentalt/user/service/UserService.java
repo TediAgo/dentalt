@@ -14,11 +14,9 @@ public interface UserService {
 
     List<UserDTO> getAdmins();
 
-    UserDTO createPatient(UserDTO userDTO);
+    UserDTO createDoctor(Integer id);
 
-    UserDTO createDoctor(UserDTO userDTO);
-
-    UserDTO createAdmin(UserDTO userDTO);
+    UserDTO createAdmin(Integer id);
 
     Integer deleteUser(Integer id);
 

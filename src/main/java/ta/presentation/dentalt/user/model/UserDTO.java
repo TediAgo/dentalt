@@ -15,8 +15,6 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
-    private String roles;
+    private Role role;
     private LocalDateTime joinedOn;
-    private Boolean validity;
 }

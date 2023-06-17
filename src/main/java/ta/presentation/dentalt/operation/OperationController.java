@@ -1,7 +1,9 @@
 package ta.presentation.dentalt.operation;
 
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ta.presentation.dentalt.operation.model.OperationDTO;
 import ta.presentation.dentalt.operation.service.OperationService;
@@ -16,50 +18,68 @@ public class OperationController {
     private OperationService operationService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<OperationDTO> getOperation(@PathVariable(value = "id") Integer id) {
+    //@PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR', 'PATIENT')")
+    //@PreAuthorize(value = "hasAnyAuthority('admin:read', 'doctor:read', 'patient:read')")
+    public ResponseEntity<OperationDTO> getOperation(@NonNull @PathVariable(value = "id") Integer id) {
         return ResponseEntity.ok(operationService.getOperation(id));
     }
 
     @GetMapping("/all")
+    //@PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR', 'PATIENT')")
+    //@PreAuthorize(value = "hasAnyAuthority('admin:read', 'doctor:read', 'patient:read')")
     public ResponseEntity<List<OperationDTO>> getAllOperations() {
         return ResponseEntity.ok(operationService.getAllOperations());
     }
 
     @PostMapping("/create")
-    public ResponseEntity<OperationDTO> createOperation(@RequestBody OperationDTO operationDTO) {
+    //@PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize(value = "hasAnyAuthority('admin:create')")
+    public ResponseEntity<OperationDTO> createOperation(@NonNull @RequestBody OperationDTO operationDTO) {
         return ResponseEntity.ok(operationService.createOperation(operationDTO));
     }
 
     @PutMapping("/change")
-    public ResponseEntity<OperationDTO> changeOperation(@RequestBody OperationDTO operationDTO) {
+    //@PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize(value = "hasAuthority('admin:update')")
+    public ResponseEntity<OperationDTO> changeOperation(@NonNull @RequestBody OperationDTO operationDTO) {
         return ResponseEntity.ok(operationService.changeOperation(operationDTO));
     }
 
     @PutMapping("/{id}/changeName")
-    public ResponseEntity<OperationDTO> changeOperationName(@PathVariable(value = "id") Integer id,
-                                                            @RequestBody String name) {
+    //@PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize(value = "hasAnyAuthority('admin:update')")
+    public ResponseEntity<OperationDTO> changeOperationName(@NonNull @PathVariable(value = "id") Integer id,
+                                                            @NonNull @RequestBody String name) {
         return ResponseEntity.ok(operationService.changeOperationName(id, name));
     }
 
     @PutMapping("/{id}/changeDescription")
-    public ResponseEntity<OperationDTO> changeOperationDescription(@PathVariable(value = "id") Integer id,
-                                                                   @RequestBody String description) {
+    //@PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize(value = "hasAnyAuthority('admin:update')")
+    public ResponseEntity<OperationDTO> changeOperationDescription(@NonNull @PathVariable(value = "id") Integer id,
+                                                                   @NonNull @RequestBody String description) {
         return ResponseEntity.ok(operationService.changeOperationDescription(id, description));
     }
 
     @PutMapping("/{id}/changePrice")
-    public ResponseEntity<OperationDTO> changeOperationPrice(@PathVariable(value = "id") Integer id,
-                                                             @RequestBody Double price) {
+    //@PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize(value = "hasAnyAuthority('admin:update')")
+    public ResponseEntity<OperationDTO> changeOperationPrice(@NonNull @PathVariable(value = "id") Integer id,
+                                                             @NonNull @RequestBody Double price) {
         return ResponseEntity.ok(operationService.changeOperationPrice(id, price));
     }
 
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Integer> deleteOperation(@PathVariable(value = "id") Integer id) {
+    //@PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize(value = "hasAnyAuthority('admin:delete')")
+    public ResponseEntity<Integer> deleteOperation(@NonNull @PathVariable(value = "id") Integer id) {
         return ResponseEntity.ok(operationService.deleteOperation(id));
     }
 
     @PutMapping("/{id}/restore")
-    public ResponseEntity<OperationDTO> restoreOperation(@PathVariable(value = "id") Integer id) {
+    //@PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize(value = "hasAnyAuthority('admin:update')")
+    public ResponseEntity<OperationDTO> restoreOperation(@NonNull @PathVariable(value = "id") Integer id) {
         return ResponseEntity.ok(operationService.restoreOperation(id));
     }
 }
