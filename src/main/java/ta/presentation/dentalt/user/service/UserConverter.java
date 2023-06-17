@@ -1,6 +1,5 @@
 package ta.presentation.dentalt.user.service;
 
-import ta.presentation.dentalt.user.model.UserAppointmentDTO;
 import ta.presentation.dentalt.user.model.UserDTO;
 import ta.presentation.dentalt.user.model.UserEntity;
 
@@ -13,18 +12,22 @@ public class UserConverter {
         userDTO.setFirstName(userEntity.getFirstName());
         userDTO.setLastName(userEntity.getLastName());
         userDTO.setEmail(userEntity.getEmail());
-        userDTO.setRoles(userEntity.getRole());
+        userDTO.setRole(userEntity.getRole());
         userDTO.setJoinedOn(userEntity.getJoinedOn());
 
         return userDTO;
     }
 
-    public static UserAppointmentDTO populateUserAppointmentDTO(UserEntity userEntity) {
-        UserAppointmentDTO userAppointmentDTO = new UserAppointmentDTO();
-        userAppointmentDTO.setId(userEntity.getId());
-        userAppointmentDTO.setEmail(userEntity.getEmail());
-        userAppointmentDTO.setFirstName(userEntity.getFirstName());
-        userAppointmentDTO.setLastName(userEntity.getLastName());
-        return userAppointmentDTO;
+    public static UserEntity createUserEntity(UserDTO userDTO) {
+        UserEntity userEntity = new UserEntity();
+
+        userEntity.setEmail(userDTO.getEmail());
+        userEntity.setFirstName(userDTO.getFirstName());
+        userEntity.setLastName(userDTO.getLastName());
+        userEntity.setRole(userDTO.getRole());
+        userEntity.setJoinedOn(userDTO.getJoinedOn());
+        userEntity.setValidity(Boolean.TRUE);
+
+        return userEntity;
     }
 }

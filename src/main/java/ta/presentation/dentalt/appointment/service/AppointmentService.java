@@ -29,11 +29,15 @@ public interface AppointmentService {
 
     List<AppointmentDTO> getAllMyNextAppointments(String loggedEmail);
 
-    AppointmentDTO applyForAppointmentByPatient(AppointmentDTO appointmentDTO);
+    AppointmentDTO applyForAppointmentByPatient(String loggedEmail, AppointmentDTO appointmentDTO);
 
-    AppointmentDTO createAppointmentByDoctor(AppointmentDTO appointmentDTO);
+    AppointmentDTO createAppointmentByDoctor(String loggedEmail, AppointmentDTO appointmentDTO);
 
     AppointmentDTO changeDate(Integer id, NewDateDTO newDate);
+
+    AppointmentDTO changeCompletionStatus(Integer id);
+
+    AppointmentDTO changePaymentStatus(Integer id);
 
     Integer deleteAppointment(Integer id);
 }

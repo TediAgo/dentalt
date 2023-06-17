@@ -79,6 +79,8 @@ public class SecurityConfiguration {
                 .requestMatchers(POST, "/appointments/createByPatient").hasAnyRole(PATIENT.name())
                 .requestMatchers(POST, "/appointments/createByDoctor").hasAnyRole(DOCTOR.name())
                 .requestMatchers(PUT, "{id}/changeDate").hasAnyRole(DOCTOR.name())
+                .requestMatchers(PUT, "{id}/changeCompletionStatus").hasAnyRole(DOCTOR.name())
+                .requestMatchers(PUT, "{id}/changePaymentStatus").hasAnyRole(DOCTOR.name())
                 .requestMatchers(DELETE, "/appointments/{id}/delete").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
 
                 .anyRequest().authenticated()

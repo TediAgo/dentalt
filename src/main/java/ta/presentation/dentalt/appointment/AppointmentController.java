@@ -105,22 +105,38 @@ public class AppointmentController {
     //@PreAuthorize("hasAnyRole('PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('patient:create')")
     public ResponseEntity<AppointmentDTO> applyForAppointmentByPatient(@NonNull @RequestBody AppointmentDTO appointmentDTO) {
-        return ResponseEntity.ok(appointmentService.applyForAppointmentByPatient(appointmentDTO));
+        TokenDetails token = TokenUtility.getDetails();
+        return ResponseEntity.ok(appointmentService.applyForAppointmentByPatient(token.getEmail(), appointmentDTO));
     }
 
     @PostMapping("/createByDoctor")
     //@PreAuthorize("hasAnyRole('DOCTOR')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:create')")
     public ResponseEntity<AppointmentDTO> createAppointmentByDoctor(@NonNull @RequestBody AppointmentDTO appointmentDTO) {
-        return ResponseEntity.ok(appointmentService.createAppointmentByDoctor(appointmentDTO));
+        TokenDetails token = TokenUtility.getDetails();
+        return ResponseEntity.ok(appointmentService.createAppointmentByDoctor(token.getEmail(), appointmentDTO));
     }
 
     @PutMapping("{id}/changeDate")
     //@PreAuthorize("hasAnyRole('DOCTOR')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:update')")
-    public ResponseEntity<AppointmentDTO> createAppointmentByDoctor(@NonNull @PathVariable(value = "id") Integer id,
+    public ResponseEntity<AppointmentDTO> changeDate(@NonNull @PathVariable(value = "id") Integer id,
                                                                     @NonNull @RequestBody NewDateDTO newDate) {
         return ResponseEntity.ok(appointmentService.changeDate(id, newDate));
+    }
+
+    @PutMapping("{id}/changeCompletionStatus")
+    //@PreAuthorize("hasAnyRole('DOCTOR')")
+    //@PreAuthorize(value = "hasAnyAuthority('doctor:update')")
+    public ResponseEntity<AppointmentDTO> changeCompletionStatus(@NonNull @PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok(appointmentService.changeCompletionStatus(id));
+    }
+
+    @PutMapping("{id}/changePaymentStatus")
+    //@PreAuthorize("hasAnyRole('DOCTOR')")
+    //@PreAuthorize(value = "hasAnyAuthority('doctor:update')")
+    public ResponseEntity<AppointmentDTO> changePaymentStatus(@NonNull @PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok(appointmentService.changePaymentStatus(id));
     }
 
     @DeleteMapping("/{id}/delete")

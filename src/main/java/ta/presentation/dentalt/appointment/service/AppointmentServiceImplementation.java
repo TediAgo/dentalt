@@ -114,6 +114,29 @@ public class AppointmentServiceImplementation implements AppointmentService {
     }
 
     @Override
+    public AppointmentDTO applyForAppointmentByPatient(String loggedEmail, AppointmentDTO appointmentDTO) {
+        List<AppointmentEntity> patientAppointments = appointmentRepository.findAll().stream()
+                .filter(appointmentEntity -> appointmentEntity.getPatientEntity().getEmail().equals(loggedEmail)
+                && appointmentEntity.getCompletionStatus().equals(CompletionStatus.COMPLETED))
+                .collect(Collectors.toList());
+        if (patientAppointments.size() > 0) {
+            return new AppointmentDTO();
+        }
+        List<AppointmentEntity> doctorAppointments = appointmentRepository.findAll().stream()
+                .filter(appointmentEntity -> appointmentEntity.getDoctorEntity().getEmail().equals(appointmentDTO.getDoctor().getEmail())
+                && appointmentEntity.get)
+                .collect(Collectors.toList());
+        AppointmentEntity appointmentEntity = AppointmentConverter.createAppointmentEntity(appointmentDTO);
+        appointmentRepository.save(appointmentEntity);
+        return AppointmentConverter.convertAppointmentEntityToDTO(appointmentEntity);
+    }
+
+    @Override
+    public AppointmentDTO createAppointmentByDoctor(String loggedEmail, AppointmentDTO appointmentDTO) {
+        return null;
+    }
+
+    @Override
     public AppointmentDTO changeDate(Integer id, NewDateDTO newDate) {
         if (appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
             AppointmentEntity appointment = appointmentRepository.findById(id).get();
@@ -126,13 +149,25 @@ public class AppointmentServiceImplementation implements AppointmentService {
     }
 
     @Override
-    public AppointmentDTO applyForAppointmentByPatient(AppointmentDTO appointmentDTO) {
-        return null;
+    public AppointmentDTO changeCompletionStatus(Integer id) {
+        if (appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
+            AppointmentEntity appointment = appointmentRepository.findById(id).get();
+            appointment.setCompletionStatus(CompletionStatus.COMPLETED);
+            appointmentRepository.save(appointment);
+            return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
+        }
+        return new AppointmentDTO();
     }
 
     @Override
-    public AppointmentDTO createAppointmentByDoctor(AppointmentDTO appointmentDTO) {
-        return null;
+    public AppointmentDTO changePaymentStatus(Integer id) {
+        if (appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
+            AppointmentEntity appointment = appointmentRepository.findById(id).get();
+            appointment.setPaymentStatus(PaymentStatus.PAID);
+            appointmentRepository.save(appointment);
+            return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
+        }
+        return new AppointmentDTO();
     }
 
     @Override
