@@ -1,7 +1,7 @@
 package ta.presentation.dentalt.security.token;
 
 import lombok.Data;
-import ta.presentation.dentalt.user.model.Role;
+import ta.presentation.dentalt.user.model.enums.Role;
 
 @Data
 public final class TokenDetails {

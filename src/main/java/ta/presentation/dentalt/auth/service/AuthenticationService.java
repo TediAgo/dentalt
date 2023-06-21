@@ -16,9 +16,9 @@ import ta.presentation.dentalt.security.service.JwtService;
 import ta.presentation.dentalt.security.token.Token;
 import ta.presentation.dentalt.security.token.TokenRepository;
 import ta.presentation.dentalt.security.token.TokenType;
-import ta.presentation.dentalt.user.UserRepository;
-import ta.presentation.dentalt.user.model.Role;
-import ta.presentation.dentalt.user.model.UserEntity;
+import ta.presentation.dentalt.user.repository.UserRepository;
+import ta.presentation.dentalt.user.model.enums.Role;
+import ta.presentation.dentalt.user.model.entity.UserEntity;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

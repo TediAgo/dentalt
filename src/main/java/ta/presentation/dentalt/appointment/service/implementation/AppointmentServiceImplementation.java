@@ -1,0 +1,219 @@
+package ta.presentation.dentalt.appointment.service.implementation;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ta.presentation.dentalt.appointment.model.dto.AppointmentDTO;
+import ta.presentation.dentalt.appointment.model.dto.NewDateDTO;
+import ta.presentation.dentalt.appointment.model.entity.AppointmentEntity;
+import ta.presentation.dentalt.appointment.model.enums.CompletionStatus;
+import ta.presentation.dentalt.appointment.model.enums.PaymentStatus;
+import ta.presentation.dentalt.appointment.repository.AppointmentRepository;
+import ta.presentation.dentalt.appointment.service.mapper.AppointmentConverter;
+import ta.presentation.dentalt.appointment.service.services.AppointmentService;
+import ta.presentation.dentalt.appointment.service.util.AppointmentUtils;
+import ta.presentation.dentalt.operation.repository.OperationRepository;
+import ta.presentation.dentalt.user.repository.UserRepository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class AppointmentServiceImplementation implements AppointmentService {
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private OperationRepository operationRepository;
+
+    @Override
+    public AppointmentDTO getAppointment(Integer id) {
+        if(appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
+            return AppointmentConverter.convertAppointmentEntityToDTO(appointmentRepository.findById(id).get());
+        }
+        return new AppointmentDTO();
+    }
+
+    @Override
+    public List<AppointmentDTO> getPatientUncompletedAppointments(Integer patientId) {
+        return appointmentRepository.findAll()
+                .stream()
+                .filter(appointmentEntity -> appointmentEntity.getPatientEntity().getId().equals(patientId)
+                        && appointmentEntity.getCompletionStatus().equals(CompletionStatus.UNCOMPLETED))
+                .map(AppointmentConverter::convertAppointmentEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentDTO> getPatientUnpaidAppointments(Integer patientId) {
+        return appointmentRepository.findAll()
+                .stream()
+                .filter(appointmentEntity -> appointmentEntity.getPatientEntity().getId().equals(patientId)
+                        && appointmentEntity.getPaymentStatus().equals(PaymentStatus.UNPAID))
+                .map(AppointmentConverter::convertAppointmentEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllMyAppointments(String loggedEmail) {
+        return appointmentRepository.findAll()
+                .stream()
+                .filter(appointmentEntity -> appointmentEntity.getDoctorEntity().getEmail().equals(loggedEmail)
+                        || appointmentEntity.getPatientEntity().getEmail().equals(loggedEmail))
+                .map(AppointmentConverter::convertAppointmentEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllMyCompletedAppointments(String loggedEmail) {
+        return appointmentRepository.findAll()
+                .stream()
+                .filter(appointmentEntity -> (appointmentEntity.getDoctorEntity().getEmail().equals(loggedEmail) || appointmentEntity.getPatientEntity().getEmail().equals(loggedEmail))
+                    || (appointmentEntity.getCompletionStatus().equals(CompletionStatus.COMPLETED)) )
+                .map(AppointmentConverter::convertAppointmentEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllMyUncompletedAppointments(String loggedEmail) {
+        return appointmentRepository.findAll()
+                .stream()
+                .filter(appointmentEntity -> (appointmentEntity.getDoctorEntity().getEmail().equals(loggedEmail) || appointmentEntity.getPatientEntity().getEmail().equals(loggedEmail))
+                        || (appointmentEntity.getCompletionStatus().equals(CompletionStatus.UNCOMPLETED)) )
+                .map(AppointmentConverter::convertAppointmentEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllMyPaidAppointments(String loggedEmail) {
+        return appointmentRepository.findAll()
+                .stream()
+                .filter(appointmentEntity -> (appointmentEntity.getDoctorEntity().getEmail().equals(loggedEmail) || appointmentEntity.getPatientEntity().getEmail().equals(loggedEmail))
+                        || (appointmentEntity.getPaymentStatus().equals(PaymentStatus.PAID)) )
+                .map(AppointmentConverter::convertAppointmentEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllMyUnpaidAppointments(String loggedEmail) {
+        return appointmentRepository.findAll()
+                .stream()
+                .filter(appointmentEntity -> (appointmentEntity.getDoctorEntity().getEmail().equals(loggedEmail) || appointmentEntity.getPatientEntity().getEmail().equals(loggedEmail))
+                        || (appointmentEntity.getPaymentStatus().equals(PaymentStatus.UNPAID)) )
+                .map(AppointmentConverter::convertAppointmentEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllMyAppointmentsByDate(String loggedEmail, LocalDateTime date) {
+        return appointmentRepository.findAll()
+                .stream()
+                .filter(appointmentEntity -> (appointmentEntity.getDoctorEntity().getEmail().equals(loggedEmail) || appointmentEntity.getPatientEntity().getEmail().equals(loggedEmail))
+                        || (appointmentEntity.getStartDateTime().getDayOfMonth() == date.getDayOfMonth() ) )
+                .map(AppointmentConverter::convertAppointmentEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllMyNextAppointments(String loggedEmail) {
+        return appointmentRepository.findAll()
+                .stream()
+                .filter(appointmentEntity -> (appointmentEntity.getDoctorEntity().getEmail().equals(loggedEmail) || appointmentEntity.getPatientEntity().getEmail().equals(loggedEmail))
+                        || (appointmentEntity.getStartDateTime().isAfter(LocalDateTime.now())) )
+                .map(AppointmentConverter::convertAppointmentEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public AppointmentDTO applyForAppointmentByPatient(String loggedEmail, AppointmentDTO appointmentDTO) {
+
+        List<AppointmentEntity> patientAppointments = appointmentRepository.findAll().stream()
+                .filter(appointmentEntity -> appointmentEntity.getPatientEntity().getEmail().equals(loggedEmail)
+                && appointmentEntity.getCompletionStatus().equals(CompletionStatus.COMPLETED))
+                .collect(Collectors.toList());
+        if (patientAppointments.size() > 0) {
+            return new AppointmentDTO();
+        }
+
+        if(userRepository.findById(appointmentDTO.getDoctor().getId()).isEmpty() || operationRepository.findById(appointmentDTO.getPatient().getId()).isEmpty()) {
+            return new AppointmentDTO();
+        }
+        List<AppointmentEntity> doctorAppointments = appointmentRepository.findAll().stream()
+                .filter(appointmentEntity -> appointmentEntity.getDoctorEntity().getEmail().equals(appointmentDTO.getDoctor().getEmail())
+                && appointmentEntity.getCompletionStatus().equals(CompletionStatus.UNCOMPLETED))
+                .collect(Collectors.toList());
+        if(!AppointmentUtils.isDateTimeFree(appointmentDTO.getStartDateTime(), appointmentDTO.getEndDateTime(), doctorAppointments)) {
+            return new AppointmentDTO();
+        }
+
+        AppointmentEntity appointmentEntity = AppointmentConverter.createAppointmentEntity(appointmentDTO);
+        appointmentRepository.save(appointmentEntity);
+        return AppointmentConverter.convertAppointmentEntityToDTO(appointmentEntity);
+    }
+
+    @Override
+    public AppointmentDTO createAppointmentByDoctor(String loggedEmail, AppointmentDTO appointmentDTO) {
+        if(userRepository.findById(appointmentDTO.getPatient().getId()).isEmpty() || operationRepository.findById(appointmentDTO.getPatient().getId()).isEmpty()) {
+            return new AppointmentDTO();
+        }
+
+        List<AppointmentEntity> doctorAppointments = appointmentRepository.findAll().stream()
+                .filter(appointmentEntity -> appointmentEntity.getDoctorEntity().getEmail().equals(appointmentDTO.getDoctor().getEmail())
+                        && appointmentEntity.getCompletionStatus().equals(CompletionStatus.UNCOMPLETED))
+                .collect(Collectors.toList());
+        if(!AppointmentUtils.isDateTimeFree(appointmentDTO.getStartDateTime(), appointmentDTO.getEndDateTime(), doctorAppointments)) {
+            return new AppointmentDTO();
+        }
+
+        AppointmentEntity appointmentEntity = AppointmentConverter.createAppointmentEntity(appointmentDTO);
+        appointmentRepository.save(appointmentEntity);
+        return AppointmentConverter.convertAppointmentEntityToDTO(appointmentEntity);
+    }
+
+    @Override
+    public AppointmentDTO changeDate(Integer id, NewDateDTO newDate) {
+        if (appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
+            AppointmentEntity appointment = appointmentRepository.findById(id).get();
+            appointment.setStartDateTime(newDate.getNewStartDateTime());
+            appointment.setEndDateTime(newDate.getNewEndDateTime());
+            appointmentRepository.save(appointment);
+            return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
+        }
+        return new AppointmentDTO();
+    }
+
+    @Override
+    public AppointmentDTO changeCompletionStatus(Integer id) {
+        if (appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
+            AppointmentEntity appointment = appointmentRepository.findById(id).get();
+            appointment.setCompletionStatus(CompletionStatus.COMPLETED);
+            appointmentRepository.save(appointment);
+            return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
+        }
+        return new AppointmentDTO();
+    }
+
+    @Override
+    public AppointmentDTO changePaymentStatus(Integer id) {
+        if (appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
+            AppointmentEntity appointment = appointmentRepository.findById(id).get();
+            appointment.setPaymentStatus(PaymentStatus.PAID);
+            appointmentRepository.save(appointment);
+            return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
+        }
+        return new AppointmentDTO();
+    }
+
+    @Override
+    public Integer deleteAppointment(Integer id) {
+        if (appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
+            AppointmentEntity appointmentEntityToDelete = appointmentRepository.findById(id).get();
+            appointmentEntityToDelete.setValidity(Boolean.FALSE);
+            appointmentRepository.save(appointmentEntityToDelete);
+            return id;
+        }
+        return null;
+    }
+}

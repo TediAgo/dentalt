@@ -12,8 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import static ta.presentation.dentalt.user.model.Role.*;
-import static ta.presentation.dentalt.user.model.Permission.*;
+import static ta.presentation.dentalt.user.model.enums.Role.*;
+import static ta.presentation.dentalt.user.model.enums.Permission.*;
 import static org.springframework.http.HttpMethod.*;
 
 @Configuration

@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ta.presentation.dentalt.user.UserRepository;
+import ta.presentation.dentalt.user.repository.UserRepository;
 
 @Configuration
 @RequiredArgsConstructor

@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ta.presentation.dentalt.user.model.UserEntity;
+import ta.presentation.dentalt.user.model.entity.UserEntity;
 
 @Data
 @Builder
