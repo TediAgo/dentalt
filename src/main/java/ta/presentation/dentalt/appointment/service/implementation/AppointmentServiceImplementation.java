@@ -148,6 +148,7 @@ public class AppointmentServiceImplementation implements AppointmentService {
             return new AppointmentDTO();
         }
 
+        appointmentDTO.getPatient().setId(userRepository.findByEmail(loggedEmail).get().getId());
         AppointmentEntity appointmentEntity = AppointmentConverter.createAppointmentEntity(appointmentDTO);
         appointmentRepository.save(appointmentEntity);
         return AppointmentConverter.convertAppointmentEntityToDTO(appointmentEntity);
@@ -167,6 +168,7 @@ public class AppointmentServiceImplementation implements AppointmentService {
             return new AppointmentDTO();
         }
 
+        appointmentDTO.getDoctor().setId(userRepository.findByEmail(loggedEmail).get().getId());
         AppointmentEntity appointmentEntity = AppointmentConverter.createAppointmentEntity(appointmentDTO);
         appointmentRepository.save(appointmentEntity);
         return AppointmentConverter.convertAppointmentEntityToDTO(appointmentEntity);
