@@ -137,7 +137,7 @@ public class AppointmentServiceImplementation implements AppointmentService {
             return new AppointmentDTO();
         }
 
-        if(userRepository.findById(appointmentDTO.getDoctor().getId()).isEmpty() || operationRepository.findById(appointmentDTO.getPatient().getId()).isEmpty()) {
+        if(userRepository.findById(appointmentDTO.getDoctor().getId()).isEmpty() || operationRepository.findById(appointmentDTO.getOperation().getId()).isEmpty()) {
             return new AppointmentDTO();
         }
         List<AppointmentEntity> doctorAppointments = appointmentRepository.findAll().stream()
@@ -149,14 +149,14 @@ public class AppointmentServiceImplementation implements AppointmentService {
         }
 
         appointmentDTO.getPatient().setId(userRepository.findByEmail(loggedEmail).get().getId());
-        AppointmentEntity appointmentEntity = AppointmentConverter.createAppointmentEntity(appointmentDTO);
+        AppointmentEntity appointmentEntity = createAppointmentEntity(appointmentDTO, loggedEmail);
         appointmentRepository.save(appointmentEntity);
         return AppointmentConverter.convertAppointmentEntityToDTO(appointmentEntity);
     }
 
     @Override
     public AppointmentDTO createAppointmentByDoctor(String loggedEmail, AppointmentDTO appointmentDTO) {
-        if(userRepository.findById(appointmentDTO.getPatient().getId()).isEmpty() || operationRepository.findById(appointmentDTO.getPatient().getId()).isEmpty()) {
+        if(userRepository.findById(appointmentDTO.getPatient().getId()).isEmpty() || operationRepository.findById(appointmentDTO.getOperation().getId()).isEmpty()) {
             return new AppointmentDTO();
         }
 
@@ -169,9 +169,23 @@ public class AppointmentServiceImplementation implements AppointmentService {
         }
 
         appointmentDTO.getDoctor().setId(userRepository.findByEmail(loggedEmail).get().getId());
-        AppointmentEntity appointmentEntity = AppointmentConverter.createAppointmentEntity(appointmentDTO);
+        AppointmentEntity appointmentEntity = createAppointmentEntity(appointmentDTO, loggedEmail);
         appointmentRepository.save(appointmentEntity);
         return AppointmentConverter.convertAppointmentEntityToDTO(appointmentEntity);
+    }
+
+    public  AppointmentEntity createAppointmentEntity(AppointmentDTO appointmentDTO, String loggedEmail) {
+        AppointmentEntity appointmentEntity = new AppointmentEntity();
+
+        appointmentEntity.setStartDateTime(appointmentDTO.getStartDateTime());
+        appointmentEntity.setEndDateTime(appointmentDTO.getEndDateTime());
+        appointmentEntity.setCompletionStatus(appointmentDTO.getCompletionStatus());
+        appointmentEntity.setPaymentStatus(appointmentDTO.getPaymentStatus());
+        appointmentEntity.setPatientEntity(userRepository.findByEmail(loggedEmail).get());
+        appointmentEntity.setDoctorEntity(userRepository.findById(appointmentDTO.getDoctor().getId()).get());
+        appointmentEntity.setOperationEntity(operationRepository.findById(appointmentDTO.getOperation().getId()).get());
+
+        return appointmentEntity;
     }
 
     @Override

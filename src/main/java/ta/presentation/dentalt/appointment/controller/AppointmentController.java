@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import ta.presentation.dentalt.appointment.model.dto.AppointmentDTO;
 import ta.presentation.dentalt.appointment.model.dto.NewDateDTO;
 import ta.presentation.dentalt.appointment.service.services.AppointmentService;
-import ta.presentation.dentalt.security.token.TokenDetails;
 import ta.presentation.dentalt.security.token.TokenUtility;
 
 import java.time.LocalDateTime;
@@ -48,40 +47,35 @@ public class AppointmentController {
     //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyAppointments() {
-        TokenDetails token = TokenUtility.getDetails();
-        return ResponseEntity.ok(appointmentService.getAllMyAppointments(token.getEmail()));
+        return ResponseEntity.ok(appointmentService.getAllMyAppointments(TokenUtility.getUsernameFromToken()));
     }
 
     @GetMapping("/allMyCompleted")
     //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyCompletedAppointments() {
-        TokenDetails token = TokenUtility.getDetails();
-        return ResponseEntity.ok(appointmentService.getAllMyCompletedAppointments(token.getEmail()));
+        return ResponseEntity.ok(appointmentService.getAllMyCompletedAppointments(TokenUtility.getUsernameFromToken()));
     }
 
     @GetMapping("/allMyUncompleted")
     //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyUncompletedAppointments() {
-        TokenDetails token = TokenUtility.getDetails();
-        return ResponseEntity.ok(appointmentService.getAllMyUncompletedAppointments(token.getEmail()));
+        return ResponseEntity.ok(appointmentService.getAllMyUncompletedAppointments(TokenUtility.getUsernameFromToken()));
     }
 
     @GetMapping("/allMyPaid")
     //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyPaidAppointments() {
-        TokenDetails token = TokenUtility.getDetails();
-        return ResponseEntity.ok(appointmentService.getAllMyPaidAppointments(token.getEmail()));
+        return ResponseEntity.ok(appointmentService.getAllMyPaidAppointments(TokenUtility.getUsernameFromToken()));
     }
 
     @GetMapping("/allMyUnpaid")
     //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyUnpaidAppointments() {
-        TokenDetails token = TokenUtility.getDetails();
-        return ResponseEntity.ok(appointmentService.getAllMyUnpaidAppointments(token.getEmail()));
+        return ResponseEntity.ok(appointmentService.getAllMyUnpaidAppointments(TokenUtility.getUsernameFromToken()));
     }
 
     @GetMapping("/all/{date}")
@@ -89,32 +83,28 @@ public class AppointmentController {
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyAppointmentsByDate(
             @NonNull @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
-        TokenDetails token = TokenUtility.getDetails();
-        return ResponseEntity.ok(appointmentService.getAllMyAppointmentsByDate(token.getEmail(), date));
+        return ResponseEntity.ok(appointmentService.getAllMyAppointmentsByDate(TokenUtility.getUsernameFromToken(), date));
     }
 
     @GetMapping("/allMylNext")
     //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:read', 'patient:read')")
     public ResponseEntity<List<AppointmentDTO>> getAllMyNextAppointments() {
-        TokenDetails token = TokenUtility.getDetails();
-        return ResponseEntity.ok(appointmentService.getAllMyNextAppointments(token.getEmail()));
+        return ResponseEntity.ok(appointmentService.getAllMyNextAppointments(TokenUtility.getUsernameFromToken()));
     }
 
     @PostMapping("/createByPatient")
     //@PreAuthorize("hasAnyRole('PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('patient:create')")
     public ResponseEntity<AppointmentDTO> applyForAppointmentByPatient(@NonNull @RequestBody AppointmentDTO appointmentDTO) {
-        TokenDetails token = TokenUtility.getDetails();
-        return ResponseEntity.ok(appointmentService.applyForAppointmentByPatient(token.getEmail(), appointmentDTO));
+        return ResponseEntity.ok(appointmentService.applyForAppointmentByPatient(TokenUtility.getUsernameFromToken(), appointmentDTO));
     }
 
     @PostMapping("/createByDoctor")
     //@PreAuthorize("hasAnyRole('DOCTOR')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:create')")
     public ResponseEntity<AppointmentDTO> createAppointmentByDoctor(@NonNull @RequestBody AppointmentDTO appointmentDTO) {
-        TokenDetails token = TokenUtility.getDetails();
-        return ResponseEntity.ok(appointmentService.createAppointmentByDoctor(token.getEmail(), appointmentDTO));
+        return ResponseEntity.ok(appointmentService.createAppointmentByDoctor(TokenUtility.getUsernameFromToken(), appointmentDTO));
     }
 
     @PutMapping("{id}/changeDate")

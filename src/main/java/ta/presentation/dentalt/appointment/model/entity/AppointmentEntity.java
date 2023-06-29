@@ -1,10 +1,7 @@
 package ta.presentation.dentalt.appointment.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ta.presentation.dentalt.appointment.model.enums.CompletionStatus;
 import ta.presentation.dentalt.appointment.model.enums.PaymentStatus;
 import ta.presentation.dentalt.operation.model.entity.OperationEntity;
@@ -12,7 +9,8 @@ import ta.presentation.dentalt.user.model.entity.UserEntity;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
