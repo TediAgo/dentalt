@@ -12,8 +12,9 @@ public class AppointmentUtils {
 
         return appointmentsToCheck.stream()
                 .filter(appointment -> (appointment.getStartDateTime().isBefore(startDateTime) && appointment.getEndDateTime().isAfter(startDateTime))
-                                    && appointment.getStartDateTime().isBefore(endDateTime) && appointment.getEndDateTime().isAfter(endDateTime)
-                                    && appointment.getStartDateTime().isAfter(startDateTime) && appointment.getEndDateTime().isBefore(endDateTime))
+                                    || (appointment.getStartDateTime().isBefore(endDateTime) && appointment.getEndDateTime().isAfter(endDateTime))
+                                    || (appointment.getStartDateTime().isAfter(startDateTime) && appointment.getEndDateTime().isBefore(endDateTime))
+                                    || (appointment.getStartDateTime().equals(startDateTime) || appointment.getEndDateTime().equals(endDateTime)) )
                 .collect(Collectors.toList())
                 .size() == 0;
     }

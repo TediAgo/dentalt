@@ -1,5 +1,6 @@
 package ta.presentation.dentalt.appointment.controller;
 
+import jakarta.validation.Valid;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -96,14 +97,14 @@ public class AppointmentController {
     @PostMapping("/createByPatient")
     //@PreAuthorize("hasAnyRole('PATIENT')")
     //@PreAuthorize(value = "hasAnyAuthority('patient:create')")
-    public ResponseEntity<AppointmentDTO> applyForAppointmentByPatient(@NonNull @RequestBody AppointmentDTO appointmentDTO) {
+    public ResponseEntity<AppointmentDTO> applyForAppointmentByPatient(@Valid @NonNull @RequestBody AppointmentDTO appointmentDTO) {
         return ResponseEntity.ok(appointmentService.applyForAppointmentByPatient(TokenUtility.getUsernameFromToken(), appointmentDTO));
     }
 
     @PostMapping("/createByDoctor")
     //@PreAuthorize("hasAnyRole('DOCTOR')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:create')")
-    public ResponseEntity<AppointmentDTO> createAppointmentByDoctor(@NonNull @RequestBody AppointmentDTO appointmentDTO) {
+    public ResponseEntity<AppointmentDTO> createAppointmentByDoctor(@Valid @NonNull @RequestBody AppointmentDTO appointmentDTO) {
         return ResponseEntity.ok(appointmentService.createAppointmentByDoctor(TokenUtility.getUsernameFromToken(), appointmentDTO));
     }
 
@@ -111,7 +112,7 @@ public class AppointmentController {
     //@PreAuthorize("hasAnyRole('DOCTOR')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:update')")
     public ResponseEntity<AppointmentDTO> changeDate(@NonNull @PathVariable(value = "id") Integer id,
-                                                                    @NonNull @RequestBody NewDateDTO newDate) {
+                                                                   @Valid @NonNull @RequestBody NewDateDTO newDate) {
         return ResponseEntity.ok(appointmentService.changeDate(id, newDate));
     }
 
