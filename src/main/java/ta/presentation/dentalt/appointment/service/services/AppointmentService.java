@@ -33,7 +33,7 @@ public interface AppointmentService {
 
     AppointmentDTO createAppointmentByDoctor(String loggedEmail, AppointmentDTO appointmentDTO);
 
-    AppointmentDTO changeDate(Integer id, NewDateDTO newDate);
+    AppointmentDTO changeDate(String loggedEmail, Integer id, NewDateDTO newDate);
 
     AppointmentDTO changeCompletionStatus(Integer id);
 

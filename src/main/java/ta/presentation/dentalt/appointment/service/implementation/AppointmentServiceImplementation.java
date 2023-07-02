@@ -38,6 +38,7 @@ public class AppointmentServiceImplementation implements AppointmentService {
         if(appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
             return AppointmentConverter.convertAppointmentEntityToDTO(appointmentRepository.findById(id).get());
         }
+        LOGGER.info("Appointment does not exist.");
         return new AppointmentDTO();
     }
 
@@ -116,7 +117,7 @@ public class AppointmentServiceImplementation implements AppointmentService {
         return appointmentRepository.findAll()
                 .stream()
                 .filter(appointmentEntity -> (appointmentEntity.getDoctorEntity().getEmail().equals(loggedEmail) || appointmentEntity.getPatientEntity().getEmail().equals(loggedEmail))
-                        && (appointmentEntity.getStartDateTime().getDayOfMonth() == date.getDayOfMonth() ) )
+                        && (appointmentEntity.getStartDateTime().toLocalDate().equals(date.toLocalDate())) )
                 .map(AppointmentConverter::convertAppointmentEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -165,15 +166,17 @@ public class AppointmentServiceImplementation implements AppointmentService {
 
     @Override
     public AppointmentDTO createAppointmentByDoctor(String loggedEmail, AppointmentDTO appointmentDTO) {
-        if(userRepository.findById(appointmentDTO.getPatient().getId()).isEmpty() || operationRepository.findById(appointmentDTO.getOperation().getId()).isEmpty()) {
+        if(userRepository.findByEmail(appointmentDTO.getPatient().getEmail()).isEmpty() || operationRepository.findById(appointmentDTO.getOperation().getId()).isEmpty()) {
+            LOGGER.info("Patient or operation does not exist.");
             return new AppointmentDTO();
         }
 
         List<AppointmentEntity> doctorAppointments = appointmentRepository.findAll().stream()
-                .filter(appointmentEntity -> appointmentEntity.getDoctorEntity().getEmail().equals(appointmentDTO.getDoctor().getEmail())
+                .filter(appointmentEntity -> appointmentEntity.getDoctorEntity().getEmail().equals(loggedEmail)
                         && appointmentEntity.getCompletionStatus().equals(CompletionStatus.UNCOMPLETED))
                 .collect(Collectors.toList());
         if(!AppointmentUtils.isDateTimeFree(appointmentDTO.getStartDateTime(), appointmentDTO.getEndDateTime(), doctorAppointments)) {
+            LOGGER.info("Doctor may have another scheduled appointment or wrong dates.");
             return new AppointmentDTO();
         }
 
@@ -188,8 +191,9 @@ public class AppointmentServiceImplementation implements AppointmentService {
 
         appointmentEntity.setStartDateTime(appointmentDTO.getStartDateTime());
         appointmentEntity.setEndDateTime(appointmentDTO.getEndDateTime());
-        appointmentEntity.setCompletionStatus(appointmentDTO.getCompletionStatus());
+        appointmentEntity.setCompletionStatus(CompletionStatus.UNCOMPLETED);
         appointmentEntity.setPaymentStatus(appointmentDTO.getPaymentStatus());
+        appointmentEntity.setValidity(Boolean.TRUE);
         if(appointmentDTO.getPatient().getEmail() != null) {
             appointmentEntity.setPatientEntity(userRepository.findByEmail(appointmentDTO.getPatient().getEmail()).get());
         } else {
@@ -201,19 +205,28 @@ public class AppointmentServiceImplementation implements AppointmentService {
             appointmentEntity.setDoctorEntity(userRepository.findByEmail(loggedEmail).get());
         }
         appointmentEntity.setOperationEntity(operationRepository.findById(appointmentDTO.getOperation().getId()).get());
-
         return appointmentEntity;
     }
 
     @Override
-    public AppointmentDTO changeDate(Integer id, NewDateDTO newDate) {
+    public AppointmentDTO changeDate(String loggedEmail, Integer id, NewDateDTO newDate) {
         if (appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            AppointmentEntity appointment = appointmentRepository.findById(id).get();
-            appointment.setStartDateTime(newDate.getNewStartDateTime());
-            appointment.setEndDateTime(newDate.getNewEndDateTime());
-            appointmentRepository.save(appointment);
-            return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
+            List<AppointmentEntity> doctorAppointments = appointmentRepository.findAll().stream()
+                    .filter(appointmentEntity -> appointmentEntity.getDoctorEntity().getEmail().equals(loggedEmail)
+                            && appointmentEntity.getCompletionStatus().equals(CompletionStatus.UNCOMPLETED))
+                    .collect(Collectors.toList());
+
+            if(AppointmentUtils.isDateTimeFree(newDate.getNewStartDateTime(), newDate.getNewEndDateTime(), doctorAppointments)) {
+                AppointmentEntity appointment = appointmentRepository.findById(id).get();
+                appointment.setStartDateTime(newDate.getNewStartDateTime());
+                appointment.setEndDateTime(newDate.getNewEndDateTime());
+                appointmentRepository.save(appointment);
+                return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
+            }
+            LOGGER.info("Doctor may have another scheduled appointment or wrong dates.");
+            return new AppointmentDTO();
         }
+        LOGGER.info("Appointment does not exist.");
         return new AppointmentDTO();
     }
 
@@ -225,6 +238,7 @@ public class AppointmentServiceImplementation implements AppointmentService {
             appointmentRepository.save(appointment);
             return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
         }
+        LOGGER.info("Appointment does not exist.");
         return new AppointmentDTO();
     }
 
@@ -236,6 +250,7 @@ public class AppointmentServiceImplementation implements AppointmentService {
             appointmentRepository.save(appointment);
             return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
         }
+        LOGGER.info("Appointment does not exist.");
         return new AppointmentDTO();
     }
 
@@ -247,6 +262,7 @@ public class AppointmentServiceImplementation implements AppointmentService {
             appointmentRepository.save(appointmentEntityToDelete);
             return id;
         }
+        LOGGER.info("Appointment does not exist.");
         return null;
     }
 }

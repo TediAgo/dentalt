@@ -113,7 +113,7 @@ public class AppointmentController {
     //@PreAuthorize(value = "hasAnyAuthority('doctor:update')")
     public ResponseEntity<AppointmentDTO> changeDate(@NonNull @PathVariable(value = "id") Integer id,
                                                                    @Valid @NonNull @RequestBody NewDateDTO newDate) {
-        return ResponseEntity.ok(appointmentService.changeDate(id, newDate));
+        return ResponseEntity.ok(appointmentService.changeDate(TokenUtility.getUsernameFromToken(), id, newDate));
     }
 
     @PutMapping("{id}/changeCompletionStatus")

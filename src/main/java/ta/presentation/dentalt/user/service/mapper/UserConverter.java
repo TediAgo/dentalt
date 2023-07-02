@@ -17,17 +17,4 @@ public class UserConverter {
 
         return userDTO;
     }
-
-    /*public static UserEntity createUserEntity(UserDTO userDTO) {
-        UserEntity userEntity = new UserEntity();
-
-        userEntity.setEmail(userDTO.getEmail());
-        userEntity.setFirstName(userDTO.getFirstName());
-        userEntity.setLastName(userDTO.getLastName());
-        userEntity.setRole(userDTO.getRole());
-        userEntity.setJoinedOn(userDTO.getJoinedOn());
-        userEntity.setValidity(Boolean.TRUE);
-
-        return userEntity;
-    }*/
 }
