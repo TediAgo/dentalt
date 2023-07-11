@@ -30,7 +30,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getPatients() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRole().equals(Role.PATIENT))
+                .filter(user -> user.getValidity().equals(Boolean.TRUE) && user.getRole().equals(Role.PATIENT))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -39,7 +39,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getDoctors() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRole().equals(Role.DOCTOR))
+                .filter(user -> user.getValidity().equals(Boolean.TRUE) && user.getRole().equals(Role.DOCTOR))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -48,7 +48,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getAdmins() {
         return userRepository.findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getValidity().equals(Boolean.TRUE) && userEntity.getRole().equals(Role.ADMIN))
+                .filter(user -> user.getValidity().equals(Boolean.TRUE) && user.getRole().equals(Role.ADMIN))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -78,9 +78,9 @@ public class UserServiceImplementation implements UserService {
     @Override
     public Integer deleteUser(Integer id) {
         if(userRepository.findById(id).isPresent() && userRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            UserEntity userEntityToDelete = userRepository.findById(id).get();
-            userEntityToDelete.setValidity(Boolean.FALSE);
-            userRepository.save(userEntityToDelete);
+            UserEntity userToDelete = userRepository.findById(id).get();
+            userToDelete.setValidity(Boolean.FALSE);
+            userRepository.save(userToDelete);
             return id;
         }
         return null;
@@ -89,10 +89,10 @@ public class UserServiceImplementation implements UserService {
     @Override
     public UserDTO restoreUser(Integer id) {
         if(userRepository.findById(id).isPresent()) {
-            UserEntity userEntityToRestore = userRepository.findById(id).get();
-            userEntityToRestore.setValidity(Boolean.TRUE);
-            userRepository.save(userEntityToRestore);
-            return UserConverter.convertUserEntityToDTO(userEntityToRestore);
+            UserEntity userToRestore = userRepository.findById(id).get();
+            userToRestore.setValidity(Boolean.TRUE);
+            userRepository.save(userToRestore);
+            return UserConverter.convertUserEntityToDTO(userToRestore);
         }
         return new UserDTO();
     }

@@ -8,13 +8,13 @@ import java.util.stream.Collectors;
 
 public class AppointmentUtils {
 
-    public static boolean isDateTimeFree(LocalDateTime startDateTime, LocalDateTime endDateTime, List<AppointmentEntity> appointmentsToCheck) {
+    public static boolean isDateTimeFree(LocalDateTime start, LocalDateTime end, List<AppointmentEntity> appointmentsToCheck) {
 
         return appointmentsToCheck.stream()
-                .filter(appointment -> (appointment.getStartDateTime().isBefore(startDateTime) && appointment.getEndDateTime().isAfter(startDateTime))
-                                    || (appointment.getStartDateTime().isBefore(endDateTime) && appointment.getEndDateTime().isAfter(endDateTime))
-                                    || (appointment.getStartDateTime().isAfter(startDateTime) && appointment.getEndDateTime().isBefore(endDateTime))
-                                    || (appointment.getStartDateTime().equals(startDateTime) || appointment.getEndDateTime().equals(endDateTime)) )
+                .filter(appointment -> (appointment.getStartDateTime().isBefore(start) && appointment.getEndDateTime().isAfter(start))
+                                    || (appointment.getStartDateTime().isBefore(end) && appointment.getEndDateTime().isAfter(end))
+                                    || (appointment.getStartDateTime().isAfter(start) && appointment.getEndDateTime().isBefore(end))
+                                    || (appointment.getStartDateTime().equals(start) || appointment.getEndDateTime().equals(end)) )
                 .collect(Collectors.toList())
                 .size() == 0;
     }

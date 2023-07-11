@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class NewDateDTO {
 
     @FutureOrPresent
-    private LocalDateTime newStartDateTime;
+    private LocalDateTime startDateTime;
     @FutureOrPresent
-    private LocalDateTime newEndDateTime;
+    private LocalDateTime endDateTime;
 }
