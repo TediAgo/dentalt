@@ -1,7 +1,8 @@
-package ta.presentation.dentalt.offers.models.entity;
+package ta.presentation.dentalt.offers.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ta.presentation.dentalt.category.model.entity.CategoryEntity;
 import ta.presentation.dentalt.operation.model.entity.OperationEntity;
 
 import java.time.LocalDate;
@@ -27,8 +28,14 @@ public class OffersEntity {
     private LocalDate finish;
     @Column(name = "price")
     private Double price;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "offers_operation",
+            joinColumns = @JoinColumn(name = "offers_id"),
+            inverseJoinColumns = @JoinColumn(name = "operation_id")
+    )
+    private List<OperationEntity> operations;
+    @ManyToOne
+    private CategoryEntity category;
     @Column(name = "validity")
     private Boolean validity;
-    @ManyToMany
-    private List<OperationEntity> operations;
 }

@@ -1,7 +1,7 @@
 package ta.presentation.dentalt.appointment.service.services;
 
 import ta.presentation.dentalt.appointment.model.dto.AppointmentDTO;
-import ta.presentation.dentalt.appointment.model.dto.NewDateDTO;
+import ta.presentation.dentalt.appointment.model.dto.AppointmentNewDateDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,7 +33,7 @@ public interface AppointmentService {
 
     AppointmentDTO createAppointmentByDoctor(String loggedEmail, AppointmentDTO appointmentDTO);
 
-    AppointmentDTO changeDate(String loggedEmail, Integer id, NewDateDTO newDate);
+    AppointmentDTO changeDate(String loggedEmail, Integer id, AppointmentNewDateDTO newDate);
 
     AppointmentDTO changeCompletionStatus(Integer id);
 

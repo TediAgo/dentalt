@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ta.presentation.dentalt.appointment.model.dto.AppointmentDTO;
-import ta.presentation.dentalt.appointment.model.dto.NewDateDTO;
+import ta.presentation.dentalt.appointment.model.dto.AppointmentNewDateDTO;
 import ta.presentation.dentalt.appointment.model.entity.AppointmentEntity;
 import ta.presentation.dentalt.appointment.model.enums.CompletionStatus;
 import ta.presentation.dentalt.appointment.model.enums.PaymentStatus;
@@ -229,7 +229,7 @@ public class AppointmentServiceImplementation implements AppointmentService {
     }
 
     @Override
-    public AppointmentDTO changeDate(String loggedEmail, Integer id, NewDateDTO newDate) {
+    public AppointmentDTO changeDate(String loggedEmail, Integer id, AppointmentNewDateDTO newDate) {
         if (appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
             List<AppointmentEntity> doctorAppointments = appointmentRepository.findAll().stream()
                     .filter(appointment -> appointment.getDoctorEntity().getEmail().equals(loggedEmail)

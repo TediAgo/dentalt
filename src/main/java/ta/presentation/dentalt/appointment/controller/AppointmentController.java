@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ta.presentation.dentalt.appointment.model.dto.AppointmentDTO;
-import ta.presentation.dentalt.appointment.model.dto.NewDateDTO;
+import ta.presentation.dentalt.appointment.model.dto.AppointmentNewDateDTO;
 import ta.presentation.dentalt.appointment.service.services.AppointmentService;
 import ta.presentation.dentalt.security.token.TokenUtility;
 
@@ -112,7 +112,7 @@ public class AppointmentController {
     //@PreAuthorize("hasAnyRole('DOCTOR')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:update')")
     public ResponseEntity<AppointmentDTO> changeDate(@NonNull @PathVariable(value = "id") Integer id,
-                                                                   @Valid @NonNull @RequestBody NewDateDTO newDate) {
+                                                                   @Valid @NonNull @RequestBody AppointmentNewDateDTO newDate) {
         return ResponseEntity.ok(appointmentService.changeDate(TokenUtility.getUsernameFromToken(), id, newDate));
     }
 
