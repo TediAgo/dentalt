@@ -1,4 +1,4 @@
-package ta.presentation.dentalt.offers.model.dto;
+package ta.presentation.dentalt.offer.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OffersDTO {
+public class OfferDTO {
 
     private Integer id;
     private String name;

@@ -1,4 +1,4 @@
-package ta.presentation.dentalt.offers.model.entity;
+package ta.presentation.dentalt.offer.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "offers")
-public class OffersEntity {
+public class OfferEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

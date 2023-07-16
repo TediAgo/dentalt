@@ -1,4 +1,4 @@
-package ta.presentation.dentalt.offers.model.dto;
+package ta.presentation.dentalt.offer.model.dto;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import lombok.AllArgsConstructor;
@@ -11,12 +11,12 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OffersNewDateDTO {
+public class OfferNewDateDTO {
 
     @NonNull
     @FutureOrPresent
-    private LocalDate startDate;
+    private LocalDate begin;
     @NonNull
     @FutureOrPresent
-    private LocalDate endDate;
+    private LocalDate finish;
 }

@@ -160,7 +160,7 @@ public class AppointmentServiceImplementation implements AppointmentService {
             return new AppointmentDTO();
         }
 
-        if(userRepository.findByEmail(appointmentDTO.getDoctor().getEmail()).isEmpty() || operationRepository.findById(appointmentDTO.getOperation().getId()).isEmpty()) {
+        if(userRepository.findByEmail(appointmentDTO.getDoctor().getEmail()).isPresent() || operationRepository.findById(appointmentDTO.getOperation().getId()).isPresent()) {
             LOGGER.info("Doctor or Operation does not exist.");
             return new AppointmentDTO();
         }
@@ -183,7 +183,7 @@ public class AppointmentServiceImplementation implements AppointmentService {
 
     @Override
     public AppointmentDTO createAppointmentByDoctor(String loggedEmail, AppointmentDTO appointmentDTO) {
-        if(userRepository.findByEmail(appointmentDTO.getPatient().getEmail()).isEmpty() || operationRepository.findById(appointmentDTO.getOperation().getId()).isEmpty()) {
+        if(userRepository.findByEmail(appointmentDTO.getPatient().getEmail()).isPresent() || operationRepository.findById(appointmentDTO.getOperation().getId()).isPresent()) {
             LOGGER.info("Patient or operation does not exist.");
             return new AppointmentDTO();
         }
