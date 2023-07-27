@@ -34,8 +34,12 @@ public class OfferEntity {
             inverseJoinColumns = @JoinColumn(name = "operation_id")
     )
     private List<OperationEntity> operations;
-    @ManyToOne
-    private CategoryEntity category;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "offers_category",
+            joinColumns = @JoinColumn(name = "offers_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<CategoryEntity> categories;
     @Column(name = "validity")
     private Boolean validity;
 }

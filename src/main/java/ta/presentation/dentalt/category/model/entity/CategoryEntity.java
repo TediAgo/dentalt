@@ -18,7 +18,7 @@ public class CategoryEntity {
     private Integer id;
     @Column(name = "name")
     @Enumerated(EnumType.STRING)
-    private Category name;
+    private String name;
     @Column(name = "discount_percentage")
     private Double discountPercentage;
     @Column(name = "validity")

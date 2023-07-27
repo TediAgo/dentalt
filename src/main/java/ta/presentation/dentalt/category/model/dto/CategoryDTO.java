@@ -11,6 +11,6 @@ import ta.presentation.dentalt.category.model.enums.Category;
 public class CategoryDTO {
 
     private Integer id;
-    private Category name;
+    private String name;
     private Double discountPercentage;
 }

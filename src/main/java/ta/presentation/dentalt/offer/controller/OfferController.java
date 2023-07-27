@@ -5,9 +5,11 @@ import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ta.presentation.dentalt.category.model.dto.CategoryDTO;
 import ta.presentation.dentalt.offer.model.dto.OfferDTO;
 import ta.presentation.dentalt.offer.model.dto.OfferNewDateDTO;
 import ta.presentation.dentalt.offer.service.services.OfferService;
+import ta.presentation.dentalt.operation.model.dto.OperationDTO;
 
 import java.util.List;
 
@@ -39,6 +41,22 @@ public class OfferController {
         return ResponseEntity.ok(offerService.createOffer(offerDTO));
     }
 
+    @PutMapping("{id}/changeOffer")
+    //@PreAuthorize("hasAnyRole('DOCTOR')")
+    //@PreAuthorize(value = "hasAnyAuthority('doctor:update')")
+    public ResponseEntity<OfferDTO> changeOffer(@NonNull @PathVariable(value = "id") Integer id,
+                                                @Valid @NonNull @RequestBody OfferDTO offerDTO) {
+        return ResponseEntity.ok(offerService.changeOffer(id, offerDTO));
+    }
+
+    @PutMapping("{id}/changeName")
+    //@PreAuthorize("hasAnyRole('DOCTOR')")
+    //@PreAuthorize(value = "hasAnyAuthority('doctor:update')")
+    public ResponseEntity<OfferDTO> changeName(@NonNull @PathVariable(value = "id") Integer id,
+                                               @NonNull @RequestBody String name) {
+        return ResponseEntity.ok(offerService.changeName(id, name));
+    }
+
     @PutMapping("{id}/changeDate")
     //@PreAuthorize("hasAnyRole('DOCTOR')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:update')")
@@ -50,30 +68,41 @@ public class OfferController {
     @PutMapping("/{id}/changePrice")
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAnyAuthority('admin:update')")
-    public ResponseEntity<OfferDTO> changeOfferPrice(@NonNull @PathVariable(value = "id") Integer id,
-                                                     @NonNull @RequestBody Double price) {
-        return ResponseEntity.ok(offerService.changeOfferPrice(id, price));
+    public ResponseEntity<OfferDTO> changePrice(@NonNull @PathVariable(value = "id") Integer id,
+                                                @NonNull @RequestBody Double price) {
+        return ResponseEntity.ok(offerService.changePrice(id, price));
     }
 
-    @PutMapping("/addOperation")
+    @PutMapping("/{id}/addOperation")
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAuthority('admin:update')")
-    public ResponseEntity<OfferDTO> changeOffer(@NonNull @RequestBody OfferDTO offerDTO) {
-        return ResponseEntity.ok(offerService.changeOffer(offerDTO));
+    public ResponseEntity<OfferDTO> addOperation(@NonNull @PathVariable(value = "id") Integer id,
+                                                 @NonNull @RequestBody OperationDTO operationDTO) {
+        return ResponseEntity.ok(offerService.addOperation(id, operationDTO));
     }
 
-    @PutMapping("/removeOperation")
+    @PutMapping("/{offerId}/removeOperation/{operationId}")
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAuthority('admin:update')")
-    public ResponseEntity<OfferDTO> changeOffer(@NonNull @RequestBody OfferDTO offerDTO) {
-        return ResponseEntity.ok(offerService.changeOffer(offerDTO));
+    public ResponseEntity<OfferDTO> removeOperation(@NonNull @PathVariable(value = "offerId") Integer offerId,
+                                                    @NonNull @PathVariable(value = "operationId") Integer operationId) {
+        return ResponseEntity.ok(offerService.removeOperation(offerId, operationId));
     }
 
-    @PutMapping("/changeCategory")
+    @PutMapping("/{id}/addCategory")
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAuthority('admin:update')")
-    public ResponseEntity<OfferDTO> changeOffer(@NonNull @RequestBody OfferDTO offerDTO) {
-        return ResponseEntity.ok(offerService.changeOffer(offerDTO));
+    public ResponseEntity<OfferDTO> addCategory(@NonNull @PathVariable(value = "id") Integer id,
+                                                @NonNull @RequestBody CategoryDTO categoryDTO) {
+        return ResponseEntity.ok(offerService.addCategory(id, categoryDTO));
+    }
+
+    @PutMapping("/{offerId}/removeCategory/{categoryId}")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize(value = "hasAuthority('admin:update')")
+    public ResponseEntity<OfferDTO> removeCategory(@NonNull @PathVariable(value = "offerId") Integer offerId,
+                                                   @NonNull @PathVariable(value = "categoryId") Integer categoryId) {
+        return ResponseEntity.ok(offerService.removeCategory(offerId, categoryId));
     }
 
     @DeleteMapping("/{id}/delete")

@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ta.presentation.dentalt.appointment.service.implementation.AppointmentServiceImplementation;
+import ta.presentation.dentalt.category.model.dto.CategoryDTO;
 import ta.presentation.dentalt.category.repository.CategoryRepository;
-import ta.presentation.dentalt.category.service.mapper.CategoryConverter;
 import ta.presentation.dentalt.offer.model.dto.OfferDTO;
 import ta.presentation.dentalt.offer.model.dto.OfferNewDateDTO;
 import ta.presentation.dentalt.offer.model.entity.OfferEntity;
@@ -15,8 +15,8 @@ import ta.presentation.dentalt.offer.service.mapper.OfferConverter;
 import ta.presentation.dentalt.offer.service.services.OfferService;
 import ta.presentation.dentalt.operation.model.dto.OperationDTO;
 import ta.presentation.dentalt.operation.repository.OperationRepository;
-import ta.presentation.dentalt.operation.service.mapper.OperationConverter;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,41 +47,63 @@ public class OfferServiceImplementation implements OfferService {
     public List<OfferDTO> getAllOffers() {
         return offerRepository.findAll()
                 .stream()
-                .filter(offer -> offer.getValidity().equals(Boolean.TRUE))
+                .filter(offer -> offer.getValidity().equals(Boolean.TRUE) && offer.getFinish().isAfter(LocalDate.now()))
                 .map(OfferConverter::convertOfferEntityToDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public OfferDTO createOffer(OfferDTO offerDTO) {
-        OfferEntity offer = new OfferEntity();
+        if(offerDTO.getOperations() == null || offerDTO.getOperations().isEmpty()) {
+            LOGGER.info("Operations not found.");
+            return new OfferDTO();
+        }
+        if(offerDTO.getCategories() == null || offerDTO.getCategories().isEmpty()) {
+            LOGGER.info("Operations not found.");
+            return new OfferDTO();
+        }
 
+        OfferEntity offer = new OfferEntity();
         offer.setName(offer.getName());
         offer.setBegin(offerDTO.getBegin());
         offer.setFinish(offerDTO.getFinish());
         offer.setPrice(offerDTO.getPrice());
-        if(offerDTO.getOperations() == null || offerDTO.getOperations().isEmpty()) {
-            LOGGER.info("No operations selected.");
-            return new OfferDTO();
-        }
-        if(!categoryRepository.findById(offerDTO.getCategoryDTO().getId()).isPresent()
-                || !categoryRepository.findById(offerDTO.getCategoryDTO().getId()).get().getValidity().equals(Boolean.TRUE) ) {
-            LOGGER.info("Category does not exist.");
-            return new OfferDTO();
-        }
+
         for (OperationDTO operationDTO: offerDTO.getOperations()) {
             offer.getOperations().addAll(
                     operationRepository.findAll()
                     .stream()
-                    .filter(operationEntity -> operationEntity.getId().equals(operationDTO.getId())
-                                                && operationEntity.getValidity().equals(Boolean.TRUE))
+                    .filter(operation -> operation.getId().equals(operationDTO.getId())
+                                                && operation.getValidity().equals(Boolean.TRUE))
                             .collect(Collectors.toList()));
         }
-        offer.setCategory(categoryRepository.findById(offerDTO.getCategoryDTO().getId()).get());
+        for (CategoryDTO categoryDTO: offerDTO.getCategories()) {
+            offer.getCategories().addAll(
+                    categoryRepository.findAll()
+                            .stream()
+                            .filter(category -> category.getId().equals(categoryDTO.getId())
+                                    && category.getValidity().equals(Boolean.TRUE))
+                            .collect(Collectors.toList()));
+        }
 
         return OfferConverter.convertOfferEntityToDTO(offer);
     }
 
+    @Override
+    public OfferDTO changeOffer(Integer id, OfferDTO offerDTO) {
+        if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
+            OfferEntity offerToChange = offerRepository.findById(id).get();
+
+            offerRepository.save(offerToChange);
+            return OfferConverter.convertOfferEntityToDTO(offerToChange);
+        }
+        return new OfferDTO();
+    }
+
+    @Override
+    public OfferDTO changeName(Integer id, String name) {
+        return null;
+    }
 
 
     @Override
@@ -97,14 +119,28 @@ public class OfferServiceImplementation implements OfferService {
     }
 
     @Override
-    public OfferDTO changeOfferPrice(Integer id, Double price) {
-        if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            OfferEntity offerToChange = offerRepository.findById(id).get();
-            offerToChange.setPrice(price);
-            offerRepository.save(offerToChange);
-            return OfferConverter.convertOfferEntityToDTO(offerToChange);
-        }
-        return new OfferDTO();
+    public OfferDTO changePrice(Integer id, Double price) {
+        return null;
+    }
+
+    @Override
+    public OfferDTO addOperation(Integer id, OperationDTO operationDTO) {
+        return null;
+    }
+
+    @Override
+    public OfferDTO removeOperation(Integer offerId, Integer operationId) {
+        return null;
+    }
+
+    @Override
+    public OfferDTO addCategory(Integer id, CategoryDTO categoryDTO) {
+        return null;
+    }
+
+    @Override
+    public OfferDTO removeCategory(Integer offerId, Integer categoryId) {
+        return null;
     }
 
     @Override

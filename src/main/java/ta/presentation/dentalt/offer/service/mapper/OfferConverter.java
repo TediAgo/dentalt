@@ -10,25 +10,23 @@ import java.util.stream.Collectors;
 
 public class OfferConverter {
 
-    public static OfferDTO convertOfferEntityToDTO (OfferEntity offerEntity) {
+    public static OfferDTO convertOfferEntityToDTO (OfferEntity offer) {
         OfferDTO offerDTO = new OfferDTO();
 
-        offerDTO.setId(offerEntity.getId());
-        offerDTO.setName(offerEntity.getName());
-        offerDTO.setBegin(offerEntity.getBegin());
-        offerDTO.setFinish(offerEntity.getFinish());
-        offerDTO.setPrice(offerEntity.getPrice());
-        offerDTO.setOperations(offerEntity.getOperations()
+        offerDTO.setId(offer.getId());
+        offerDTO.setName(offer.getName());
+        offerDTO.setBegin(offer.getBegin());
+        offerDTO.setFinish(offer.getFinish());
+        offerDTO.setPrice(offer.getPrice());
+        offerDTO.setOperations(offer.getOperations()
                 .stream()
                 .map(OperationConverter::convertOperationEntityToDTO)
                 .collect(Collectors.toList()));
-        offerDTO.setCategoryDTO(CategoryConverter.convertCategoryEntityToDTO(offerEntity.getCategory()));
+        offerDTO.setCategories(offer.getCategories()
+                .stream()
+                .map(CategoryConverter::convertCategoryEntityToDTO)
+                .collect(Collectors.toList()));
 
         return offerDTO;
-    }
-
-    public static OfferEntity convertOfferDTOToEntity(OfferDTO offerDTO) {
-
-
     }
 }
