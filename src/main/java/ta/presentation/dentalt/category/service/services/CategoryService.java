@@ -5,6 +5,7 @@ import ta.presentation.dentalt.category.model.dto.CategoryDTO;
 import java.util.List;
 
 public interface CategoryService {
+
     CategoryDTO getCategory(Integer id);
 
     List<CategoryDTO> getAllCategories();

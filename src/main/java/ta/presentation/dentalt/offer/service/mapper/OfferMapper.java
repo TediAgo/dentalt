@@ -12,5 +12,6 @@ public interface OfferMapper {
     OfferMapper INSTANCE = Mappers.getMapper(OfferMapper.class);
 
     OfferDTO offersToDTO(OfferEntity offers);
+
     OfferEntity offersDTOToOffers(OfferDTO offerDTO);
 }

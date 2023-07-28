@@ -12,5 +12,6 @@ public interface AppointmentMapper {
     AppointmentMapper INSTANCE = Mappers.getMapper(AppointmentMapper.class);
 
     AppointmentDTO appointmentToDTO(AppointmentEntity appointment);
+
     AppointmentEntity appointmentDTOToAppointment(AppointmentDTO appointmentDTO);
 }

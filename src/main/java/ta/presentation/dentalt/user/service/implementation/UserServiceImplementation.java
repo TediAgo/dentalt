@@ -1,7 +1,10 @@
 package ta.presentation.dentalt.user.service.implementation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ta.presentation.dentalt.appointment.service.implementation.AppointmentServiceImplementation;
 import ta.presentation.dentalt.user.repository.UserRepository;
 import ta.presentation.dentalt.user.model.enums.Role;
 import ta.presentation.dentalt.user.model.dto.UserDTO;
@@ -15,6 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImplementation implements UserService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppointmentServiceImplementation.class);
+
     @Autowired
     private UserRepository userRepository;
 
@@ -23,6 +28,7 @@ public class UserServiceImplementation implements UserService {
         if (userRepository.findById(id).isPresent()  && userRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
             return UserConverter.convertUserEntityToDTO(userRepository.findById(id).get());
         }
+        LOGGER.info("User not found.");
         return new UserDTO();
     }
 
@@ -30,7 +36,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getPatients() {
         return userRepository.findAll()
                 .stream()
-                .filter(user -> user.getValidity().equals(Boolean.TRUE) && user.getRole().equals(Role.PATIENT))
+                .filter(user -> user.getRole().equals(Role.PATIENT) && user.getValidity().equals(Boolean.TRUE))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -39,7 +45,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getDoctors() {
         return userRepository.findAll()
                 .stream()
-                .filter(user -> user.getValidity().equals(Boolean.TRUE) && user.getRole().equals(Role.DOCTOR))
+                .filter(user -> user.getRole().equals(Role.DOCTOR) && user.getValidity().equals(Boolean.TRUE))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -48,7 +54,7 @@ public class UserServiceImplementation implements UserService {
     public List<UserDTO> getAdmins() {
         return userRepository.findAll()
                 .stream()
-                .filter(user -> user.getValidity().equals(Boolean.TRUE) && user.getRole().equals(Role.ADMIN))
+                .filter(user -> user.getRole().equals(Role.ADMIN) && user.getValidity().equals(Boolean.TRUE))
                 .map(UserConverter::convertUserEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -61,6 +67,7 @@ public class UserServiceImplementation implements UserService {
             userRepository.save(userToDoctor);
             return UserConverter.convertUserEntityToDTO(userToDoctor);
         }
+        LOGGER.info("User not found.");
         return new UserDTO();
     }
 
@@ -72,28 +79,7 @@ public class UserServiceImplementation implements UserService {
             userRepository.save(userToAdmin);
             return UserConverter.convertUserEntityToDTO(userToAdmin);
         }
-        return new UserDTO();
-    }
-
-    @Override
-    public Integer deleteUser(Integer id) {
-        if(userRepository.findById(id).isPresent() && userRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            UserEntity userToDelete = userRepository.findById(id).get();
-            userToDelete.setValidity(Boolean.FALSE);
-            userRepository.save(userToDelete);
-            return id;
-        }
-        return null;
-    }
-
-    @Override
-    public UserDTO restoreUser(Integer id) {
-        if(userRepository.findById(id).isPresent()) {
-            UserEntity userToRestore = userRepository.findById(id).get();
-            userToRestore.setValidity(Boolean.TRUE);
-            userRepository.save(userToRestore);
-            return UserConverter.convertUserEntityToDTO(userToRestore);
-        }
+        LOGGER.info("User not found.");
         return new UserDTO();
     }
 }

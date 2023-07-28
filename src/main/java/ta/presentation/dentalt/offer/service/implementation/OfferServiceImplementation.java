@@ -39,7 +39,7 @@ public class OfferServiceImplementation implements OfferService {
         if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
             return OfferConverter.convertOfferEntityToDTO(offerRepository.findById(id).get());
         }
-        LOGGER.info("Offer does not exist.");
+        LOGGER.info("Offer not found.");
         return new OfferDTO();
     }
 
@@ -47,7 +47,7 @@ public class OfferServiceImplementation implements OfferService {
     public List<OfferDTO> getAllOffers() {
         return offerRepository.findAll()
                 .stream()
-                .filter(offer -> offer.getValidity().equals(Boolean.TRUE) && offer.getFinish().isAfter(LocalDate.now()))
+                .filter(offer -> offer.getFinish().isAfter(LocalDate.now()) && offer.getValidity().equals(Boolean.TRUE))
                 .map(OfferConverter::convertOfferEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -59,7 +59,7 @@ public class OfferServiceImplementation implements OfferService {
             return new OfferDTO();
         }
         if(offerDTO.getCategories() == null || offerDTO.getCategories().isEmpty()) {
-            LOGGER.info("Operations not found.");
+            LOGGER.info("Categories not found.");
             return new OfferDTO();
         }
 
@@ -71,97 +71,142 @@ public class OfferServiceImplementation implements OfferService {
 
         for (OperationDTO operationDTO: offerDTO.getOperations()) {
             offer.getOperations().addAll(
-                    operationRepository.findAll()
-                    .stream()
-                    .filter(operation -> operation.getId().equals(operationDTO.getId())
-                                                && operation.getValidity().equals(Boolean.TRUE))
+                    operationRepository.findAll().stream()
+                            .filter(operation -> operation.getId().equals(operationDTO.getId()) && operation.getValidity().equals(Boolean.TRUE))
                             .collect(Collectors.toList()));
         }
         for (CategoryDTO categoryDTO: offerDTO.getCategories()) {
             offer.getCategories().addAll(
-                    categoryRepository.findAll()
-                            .stream()
-                            .filter(category -> category.getId().equals(categoryDTO.getId())
-                                    && category.getValidity().equals(Boolean.TRUE))
+                    categoryRepository.findAll().stream()
+                            .filter(category -> category.getId().equals(categoryDTO.getId()) && category.getValidity().equals(Boolean.TRUE))
                             .collect(Collectors.toList()));
         }
-
+        offerRepository.save(offer);
         return OfferConverter.convertOfferEntityToDTO(offer);
     }
 
     @Override
-    public OfferDTO changeOffer(Integer id, OfferDTO offerDTO) {
-        if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            OfferEntity offerToChange = offerRepository.findById(id).get();
-
-            offerRepository.save(offerToChange);
-            return OfferConverter.convertOfferEntityToDTO(offerToChange);
-        }
-        return new OfferDTO();
-    }
-
-    @Override
     public OfferDTO changeName(Integer id, String name) {
-        return null;
+        if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
+            OfferEntity offer = offerRepository.findById(id).get();
+            offer.setName(name);
+            offerRepository.save(offer);
+            return OfferConverter.convertOfferEntityToDTO(offer);
+        }
+        LOGGER.info("Offer not found.");
+        return new OfferDTO();
     }
 
 
     @Override
     public OfferDTO changeDate(Integer id, OfferNewDateDTO newDate) {
-        if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            OfferEntity offerToChange = offerRepository.findById(id).get();
-            offerToChange.setBegin(newDate.getBegin());
-            offerToChange.setFinish(newDate.getFinish());
-            offerRepository.save(offerToChange);
-            return OfferConverter.convertOfferEntityToDTO(offerToChange);
+        if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)
+                && newDate.getFinish().isAfter(newDate.getBegin())) {
+            OfferEntity offer = offerRepository.findById(id).get();
+            offer.setBegin(newDate.getBegin());
+            offer.setFinish(newDate.getFinish());
+            offerRepository.save(offer);
+            return OfferConverter.convertOfferEntityToDTO(offer);
         }
+        LOGGER.info("Offer not found or wrong dates.");
         return new OfferDTO();
     }
 
     @Override
     public OfferDTO changePrice(Integer id, Double price) {
-        return null;
+        if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
+            OfferEntity offer = offerRepository.findById(id).get();
+            offer.setPrice(price);
+            offerRepository.save(offer);
+            return OfferConverter.convertOfferEntityToDTO(offer);
+        }
+        LOGGER.info("Offer not found.");
+        return new OfferDTO();
     }
 
     @Override
-    public OfferDTO addOperation(Integer id, OperationDTO operationDTO) {
-        return null;
+    public OfferDTO addOperations(Integer id, List<OperationDTO> operations) {
+        if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
+            OfferEntity offer = offerRepository.findById(id).get();
+            for (OperationDTO operationDTO: operations) {
+                offer.getOperations().addAll(
+                        operationRepository.findAll().stream()
+                                .filter(operation -> operation.getId().equals(operationDTO.getId()) && operation.getValidity().equals(Boolean.TRUE))
+                                .collect(Collectors.toList()));
+            }
+            offerRepository.save(offer);
+            return OfferConverter.convertOfferEntityToDTO(offer);
+        }
+        LOGGER.info("Offer not found.");
+        return new OfferDTO();
     }
 
     @Override
     public OfferDTO removeOperation(Integer offerId, Integer operationId) {
-        return null;
+        if(offerRepository.findById(offerId).isPresent() && offerRepository.findById(offerId).get().getValidity().equals(Boolean.TRUE)) {
+            if(operationRepository.findById(operationId).isPresent() && operationRepository.findById(operationId).get().getValidity().equals(Boolean.TRUE)) {
+                OfferEntity offer = offerRepository.findById(offerId).get();
+                offer.getOperations().remove(operationRepository.findById(operationId).get());
+                offerRepository.save(offer);
+            }
+            LOGGER.info("Operation not found.");
+        }
+        LOGGER.info("Offer not found.");
+        return new OfferDTO();
     }
 
     @Override
-    public OfferDTO addCategory(Integer id, CategoryDTO categoryDTO) {
-        return null;
+    public OfferDTO addCategories(Integer id, List<CategoryDTO> categories) {
+        if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
+            OfferEntity offer = offerRepository.findById(id).get();
+            for (CategoryDTO categoryDTO: categories) {
+                offer.getCategories().addAll(
+                        categoryRepository.findAll().stream()
+                                .filter(category -> category.getId().equals(categoryDTO.getId()) && category.getValidity().equals(Boolean.TRUE))
+                                .collect(Collectors.toList()));
+            }
+            offerRepository.save(offer);
+            return OfferConverter.convertOfferEntityToDTO(offer);
+        }
+        LOGGER.info("Offer not found.");
+        return new OfferDTO();
     }
 
     @Override
     public OfferDTO removeCategory(Integer offerId, Integer categoryId) {
-        return null;
+        if(offerRepository.findById(offerId).isPresent() && offerRepository.findById(offerId).get().getValidity().equals(Boolean.TRUE)) {
+            if(categoryRepository.findById(categoryId).isPresent() && categoryRepository.findById(categoryId).get().getValidity().equals(Boolean.TRUE)) {
+                OfferEntity offer = offerRepository.findById(offerId).get();
+                offer.getCategories().remove(categoryRepository.findById(categoryId).get());
+                offerRepository.save(offer);
+            }
+            LOGGER.info("Category not found.");
+        }
+        LOGGER.info("Offer not found.");
+        return new OfferDTO();
     }
 
     @Override
     public Integer deleteOffer(Integer id) {
         if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            OfferEntity offerToChange = offerRepository.findById(id).get();
-            offerToChange.setValidity(Boolean.FALSE);
-            offerRepository.save(offerToChange);
+            OfferEntity offer = offerRepository.findById(id).get();
+            offer.setValidity(Boolean.FALSE);
+            offerRepository.save(offer);
             return id;
         }
+        LOGGER.info("Offer not found.");
         return null;
     }
 
     @Override
     public OfferDTO restoreOffer(Integer id) {
         if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
-            OfferEntity offerToChange = offerRepository.findById(id).get();
-            offerToChange.setValidity(Boolean.TRUE);
-            offerRepository.save(offerToChange);
-            return OfferConverter.convertOfferEntityToDTO(offerToChange);
+            OfferEntity offer = offerRepository.findById(id).get();
+            offer.setValidity(Boolean.TRUE);
+            offerRepository.save(offer);
+            return OfferConverter.convertOfferEntityToDTO(offer);
         }
+        LOGGER.info("Offer not found.");
         return new OfferDTO();
     }
 }

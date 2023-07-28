@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/offers")
+//@PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR', 'PATIENT')")
 public class OfferController {
 
     @Autowired
@@ -41,14 +42,6 @@ public class OfferController {
         return ResponseEntity.ok(offerService.createOffer(offerDTO));
     }
 
-    @PutMapping("{id}/changeOffer")
-    //@PreAuthorize("hasAnyRole('DOCTOR')")
-    //@PreAuthorize(value = "hasAnyAuthority('doctor:update')")
-    public ResponseEntity<OfferDTO> changeOffer(@NonNull @PathVariable(value = "id") Integer id,
-                                                @Valid @NonNull @RequestBody OfferDTO offerDTO) {
-        return ResponseEntity.ok(offerService.changeOffer(id, offerDTO));
-    }
-
     @PutMapping("{id}/changeName")
     //@PreAuthorize("hasAnyRole('DOCTOR')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:update')")
@@ -73,12 +66,12 @@ public class OfferController {
         return ResponseEntity.ok(offerService.changePrice(id, price));
     }
 
-    @PutMapping("/{id}/addOperation")
+    @PutMapping("/{id}/addOperations")
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAuthority('admin:update')")
-    public ResponseEntity<OfferDTO> addOperation(@NonNull @PathVariable(value = "id") Integer id,
-                                                 @NonNull @RequestBody OperationDTO operationDTO) {
-        return ResponseEntity.ok(offerService.addOperation(id, operationDTO));
+    public ResponseEntity<OfferDTO> addOperations(@NonNull @PathVariable(value = "id") Integer id,
+                                                  @NonNull @RequestBody List<OperationDTO> operations) {
+        return ResponseEntity.ok(offerService.addOperations(id, operations));
     }
 
     @PutMapping("/{offerId}/removeOperation/{operationId}")
@@ -89,12 +82,12 @@ public class OfferController {
         return ResponseEntity.ok(offerService.removeOperation(offerId, operationId));
     }
 
-    @PutMapping("/{id}/addCategory")
+    @PutMapping("/{id}/addCategories")
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAuthority('admin:update')")
-    public ResponseEntity<OfferDTO> addCategory(@NonNull @PathVariable(value = "id") Integer id,
-                                                @NonNull @RequestBody CategoryDTO categoryDTO) {
-        return ResponseEntity.ok(offerService.addCategory(id, categoryDTO));
+    public ResponseEntity<OfferDTO> addCategories(@NonNull @PathVariable(value = "id") Integer id,
+                                                  @NonNull @RequestBody List<CategoryDTO> categories) {
+        return ResponseEntity.ok(offerService.addCategories(id, categories));
     }
 
     @PutMapping("/{offerId}/removeCategory/{categoryId}")

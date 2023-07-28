@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface AppointmentService {
 
-
     AppointmentDTO getAppointment(Integer id);
 
     List<AppointmentDTO> getPatientUncompletedAppointments(Integer patientId);

@@ -112,7 +112,7 @@ public class AppointmentController {
     //@PreAuthorize("hasAnyRole('DOCTOR')")
     //@PreAuthorize(value = "hasAnyAuthority('doctor:update')")
     public ResponseEntity<AppointmentDTO> changeDate(@NonNull @PathVariable(value = "id") Integer id,
-                                                                   @Valid @NonNull @RequestBody AppointmentNewDateDTO newDate) {
+                                                     @Valid @NonNull @RequestBody AppointmentNewDateDTO newDate) {
         return ResponseEntity.ok(appointmentService.changeDate(TokenUtility.getUsernameFromToken(), id, newDate));
     }
 

@@ -5,15 +5,15 @@ import ta.presentation.dentalt.user.model.entity.UserEntity;
 
 public class UserConverter {
 
-    public static UserDTO convertUserEntityToDTO(UserEntity userEntity) {
+    public static UserDTO convertUserEntityToDTO(UserEntity user) {
         UserDTO userDTO = new UserDTO();
 
-        userDTO.setId(userEntity.getId());
-        userDTO.setFirstName(userEntity.getFirstName());
-        userDTO.setLastName(userEntity.getLastName());
-        userDTO.setEmail(userEntity.getEmail());
-        userDTO.setRole(userEntity.getRole());
-        userDTO.setJoinedOn(userEntity.getJoinedOn());
+        userDTO.setId(user.getId());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setRole(user.getRole());
+        userDTO.setJoinedOn(user.getJoinedOn());
 
         return userDTO;
     }

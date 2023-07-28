@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/category")
+//@PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR', 'PATIENT')")
 public class CategoryController {
 
     @Autowired
@@ -48,7 +49,7 @@ public class CategoryController {
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAnyAuthority('admin:update')")
     public ResponseEntity<CategoryDTO> changeName(@NonNull @PathVariable(value = "id") Integer id,
-                                                            @NonNull @RequestBody String name) {
+                                                  @NonNull @RequestBody String name) {
         return ResponseEntity.ok(categoryService.changeName(id, name));
     }
 
@@ -56,7 +57,7 @@ public class CategoryController {
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAnyAuthority('admin:update')")
     public ResponseEntity<CategoryDTO> changeDiscountPercentage(@NonNull @PathVariable(value = "id") Integer id,
-                                                                   @NonNull @RequestBody Double discountPercentage) {
+                                                                @NonNull @RequestBody Double discountPercentage) {
         return ResponseEntity.ok(categoryService.changeDiscountPercentage(id, discountPercentage));
     }
 

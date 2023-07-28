@@ -11,5 +11,6 @@ public interface OperationMapper {
     OperationMapper INSTANCE = Mappers.getMapper(OperationMapper.class);
 
     OperationDTO operationToDTO(OperationEntity operation);
+
     OperationEntity operationDTOToOperation(OperationDTO operationDTO);
 }

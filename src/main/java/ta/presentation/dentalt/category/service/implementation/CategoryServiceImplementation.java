@@ -59,7 +59,7 @@ public class CategoryServiceImplementation implements CategoryService {
             return CategoryConverter.convertCategoryEntityToDTO(category);
         }
         LOGGER.info("Category not found.");
-        return null;
+        return new CategoryDTO();
     }
 
     @Override
@@ -70,7 +70,7 @@ public class CategoryServiceImplementation implements CategoryService {
             return CategoryConverter.convertCategoryEntityToDTO(category);
         }
         LOGGER.info("Category not found.");
-        return null;
+        return new CategoryDTO();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class CategoryServiceImplementation implements CategoryService {
             return CategoryConverter.convertCategoryEntityToDTO(category);
         }
         LOGGER.info("Category not found.");
-        return null;
+        return new CategoryDTO();
     }
 
     @Override
