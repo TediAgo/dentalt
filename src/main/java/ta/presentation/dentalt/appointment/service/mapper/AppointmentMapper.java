@@ -5,7 +5,6 @@ import org.mapstruct.factory.Mappers;
 import ta.presentation.dentalt.appointment.model.dto.AppointmentDTO;
 import ta.presentation.dentalt.appointment.model.entity.AppointmentEntity;
 
-
 @Mapper
 public interface AppointmentMapper {
 

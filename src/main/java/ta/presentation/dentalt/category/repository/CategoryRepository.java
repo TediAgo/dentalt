@@ -6,4 +6,5 @@ import ta.presentation.dentalt.category.model.entity.CategoryEntity;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Integer> {
+
 }

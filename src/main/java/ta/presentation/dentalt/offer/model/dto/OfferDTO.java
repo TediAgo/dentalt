@@ -20,5 +20,5 @@ public class OfferDTO {
     private LocalDate finish;
     private Double price;
     private List<OperationDTO> operations;
-    private List<CategoryDTO> categories;
+    private CategoryDTO category;
 }

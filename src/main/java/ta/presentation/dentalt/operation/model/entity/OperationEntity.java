@@ -24,8 +24,8 @@ public class OperationEntity {
     private String description;
     @Column(name = "price")
     private Double price;
-    @ManyToMany(mappedBy = "operation_offers")
-    private List<OfferEntity> students;
+    @ManyToMany(mappedBy = "operations")
+    private List<OfferEntity> offers;
     @Column(name = "validity")
     private Boolean validity;
 }

@@ -5,7 +5,6 @@ import org.mapstruct.factory.Mappers;
 import ta.presentation.dentalt.offer.model.dto.OfferDTO;
 import ta.presentation.dentalt.offer.model.entity.OfferEntity;
 
-
 @Mapper
 public interface OfferMapper {
 

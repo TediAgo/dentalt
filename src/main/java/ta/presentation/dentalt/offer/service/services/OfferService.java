@@ -1,6 +1,5 @@
 package ta.presentation.dentalt.offer.service.services;
 
-import ta.presentation.dentalt.category.model.dto.CategoryDTO;
 import ta.presentation.dentalt.offer.model.dto.OfferDTO;
 import ta.presentation.dentalt.offer.model.dto.OfferNewDateDTO;
 import ta.presentation.dentalt.operation.model.dto.OperationDTO;
@@ -25,9 +24,7 @@ public interface OfferService {
 
     OfferDTO removeOperation(Integer offerId, Integer operationId);
 
-    OfferDTO addCategories(Integer id, List<CategoryDTO> categories);
-
-    OfferDTO removeCategory(Integer offerId, Integer categoryId);
+    OfferDTO changeCategory(Integer offerId, Integer categoryId);
 
     Integer deleteOffer(Integer id);
 

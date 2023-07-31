@@ -2,7 +2,6 @@ package ta.presentation.dentalt.category.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ta.presentation.dentalt.category.model.enums.Category;
 
 @Getter
 @Setter
@@ -17,7 +16,6 @@ public class CategoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "name")
-    @Enumerated(EnumType.STRING)
     private String name;
     @Column(name = "discount_percentage")
     private Double discountPercentage;

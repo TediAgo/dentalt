@@ -28,18 +28,15 @@ public class OfferEntity {
     private LocalDate finish;
     @Column(name = "price")
     private Double price;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "offers_operation",
+    @ManyToMany
+    @JoinTable(name = "offers_operations",
             joinColumns = @JoinColumn(name = "offers_id"),
             inverseJoinColumns = @JoinColumn(name = "operation_id")
     )
     private List<OperationEntity> operations;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "offers_category",
-            joinColumns = @JoinColumn(name = "offers_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private List<CategoryEntity> categories;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryEntity category;
     @Column(name = "validity")
     private Boolean validity;
 }

@@ -5,7 +5,6 @@ import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ta.presentation.dentalt.category.model.dto.CategoryDTO;
 import ta.presentation.dentalt.offer.model.dto.OfferDTO;
 import ta.presentation.dentalt.offer.model.dto.OfferNewDateDTO;
 import ta.presentation.dentalt.offer.service.services.OfferService;
@@ -82,20 +81,12 @@ public class OfferController {
         return ResponseEntity.ok(offerService.removeOperation(offerId, operationId));
     }
 
-    @PutMapping("/{id}/addCategories")
+    @PutMapping("/{offerId}/changeCategory/{categoryId}")
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAuthority('admin:update')")
-    public ResponseEntity<OfferDTO> addCategories(@NonNull @PathVariable(value = "id") Integer id,
-                                                  @NonNull @RequestBody List<CategoryDTO> categories) {
-        return ResponseEntity.ok(offerService.addCategories(id, categories));
-    }
-
-    @PutMapping("/{offerId}/removeCategory/{categoryId}")
-    //@PreAuthorize("hasAnyRole('ADMIN')")
-    //@PreAuthorize(value = "hasAuthority('admin:update')")
-    public ResponseEntity<OfferDTO> removeCategory(@NonNull @PathVariable(value = "offerId") Integer offerId,
+    public ResponseEntity<OfferDTO> changeCategory(@NonNull @PathVariable(value = "offerId") Integer offerId,
                                                    @NonNull @PathVariable(value = "categoryId") Integer categoryId) {
-        return ResponseEntity.ok(offerService.removeCategory(offerId, categoryId));
+        return ResponseEntity.ok(offerService.changeCategory(offerId, categoryId));
     }
 
     @DeleteMapping("/{id}/delete")

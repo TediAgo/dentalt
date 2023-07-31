@@ -7,5 +7,4 @@ import ta.presentation.dentalt.appointment.model.entity.AppointmentEntity;
 @Repository
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Integer> {
 
-
 }
