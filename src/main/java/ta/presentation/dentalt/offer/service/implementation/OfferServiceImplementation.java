@@ -14,9 +14,11 @@ import ta.presentation.dentalt.offer.service.mapper.OfferConverter;
 import ta.presentation.dentalt.offer.service.services.OfferService;
 import ta.presentation.dentalt.operation.model.dto.OperationDTO;
 import ta.presentation.dentalt.offer.service.util.OfferUtil;
+
 import ta.presentation.dentalt.operation.repository.OperationRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,24 +61,24 @@ public class OfferServiceImplementation implements OfferService {
             return new OfferDTO();
         }
         if(offerDTO.getCategory() == null) {
-            LOGGER.info("Categories not found.");
+            LOGGER.info("Category not found.");
             return new OfferDTO();
         }
 
         OfferEntity offer = new OfferEntity();
-        offer.setName(offer.getName());
+        offer.setName(offerDTO.getName());
         offer.setBegin(offerDTO.getBegin());
         offer.setFinish(offerDTO.getFinish());
-
+        offer.setOperations(new ArrayList<>());
         for (OperationDTO operationDTO: offerDTO.getOperations()) {
             offer.getOperations().addAll(
                     operationRepository.findAll().stream()
                             .filter(operation -> operation.getId().equals(operationDTO.getId()) && operation.getValidity().equals(Boolean.TRUE))
                             .collect(Collectors.toList()));
         }
-        offer.setCategory(categoryRepository.findById(offerDTO.getId()).get());
-
+        offer.setCategory(categoryRepository.findById(offerDTO.getCategory().getId()).get());
         offer.setPrice(OfferUtil.calculateOfferPrice(offer.getOperations(), offer.getCategory()));
+
         offerRepository.save(offer);
         return OfferConverter.convertOfferEntityToDTO(offer);
     }
