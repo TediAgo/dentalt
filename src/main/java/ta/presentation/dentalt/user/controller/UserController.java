@@ -59,18 +59,4 @@ public class UserController {
     public ResponseEntity<UserDTO> createAdmin(@NonNull @PathVariable (value = "id") Integer id) {
         return ResponseEntity.ok(userService.createAdmin(id));
     }
-
-    /*@DeleteMapping("/{id}/delete")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @PreAuthorize(value = "hasAnyAuthority('admin:delete')")
-    public ResponseEntity<Integer> deleteUser(@NonNull @PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok(userService.deleteUser(id));
-    }
-
-    @PutMapping("/{id}/restore")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @PreAuthorize(value = "hasAnyAuthority('admin:update')")
-    public ResponseEntity<UserDTO> restoreUser(@NonNull @PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok(userService.restoreUser(id));
-    }*/
 }

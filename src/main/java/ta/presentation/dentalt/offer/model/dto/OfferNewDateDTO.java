@@ -1,19 +1,22 @@
-package ta.presentation.dentalt.appointment.model.dto;
+package ta.presentation.dentalt.offer.model.dto;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewDateDTO {
+public class OfferNewDateDTO {
 
+    @NonNull
     @FutureOrPresent
-    private LocalDateTime newStartDateTime;
+    private LocalDate begin;
+    @NonNull
     @FutureOrPresent
-    private LocalDateTime newEndDateTime;
+    private LocalDate finish;
 }

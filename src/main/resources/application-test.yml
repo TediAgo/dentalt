@@ -1,11 +1,13 @@
 spring:
-  profiles:
-    active: dev
+  h2:
+    console:
+      enabled: true
+      path: /h2
   datasource:
-    url: jdbc:postgresql://localhost:5432/dentalt
-    username: postgres
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:db
+    username: h2
     password: Bilisht123()
-    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,8 +15,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 application:
   security:

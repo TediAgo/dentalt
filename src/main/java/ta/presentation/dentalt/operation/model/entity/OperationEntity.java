@@ -2,6 +2,9 @@ package ta.presentation.dentalt.operation.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ta.presentation.dentalt.offer.model.entity.OfferEntity;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,6 +24,8 @@ public class OperationEntity {
     private String description;
     @Column(name = "price")
     private Double price;
+    @ManyToMany(mappedBy = "operations")
+    private List<OfferEntity> offers;
     @Column(name = "validity")
     private Boolean validity;
 }

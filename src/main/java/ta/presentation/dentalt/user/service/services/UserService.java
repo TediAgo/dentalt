@@ -17,8 +17,4 @@ public interface UserService {
     UserDTO createDoctor(Integer id);
 
     UserDTO createAdmin(Integer id);
-
-    Integer deleteUser(Integer id);
-
-    UserDTO restoreUser(Integer id);
 }

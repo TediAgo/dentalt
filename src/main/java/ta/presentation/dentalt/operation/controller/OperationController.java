@@ -48,25 +48,25 @@ public class OperationController {
     @PutMapping("/{id}/changeName")
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAnyAuthority('admin:update')")
-    public ResponseEntity<OperationDTO> changeOperationName(@NonNull @PathVariable(value = "id") Integer id,
-                                                            @NonNull @RequestBody String name) {
-        return ResponseEntity.ok(operationService.changeOperationName(id, name));
+    public ResponseEntity<OperationDTO> changeName(@NonNull @PathVariable(value = "id") Integer id,
+                                                   @NonNull @RequestBody String name) {
+        return ResponseEntity.ok(operationService.changeName(id, name));
     }
 
     @PutMapping("/{id}/changeDescription")
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAnyAuthority('admin:update')")
-    public ResponseEntity<OperationDTO> changeOperationDescription(@NonNull @PathVariable(value = "id") Integer id,
-                                                                   @NonNull @RequestBody String description) {
-        return ResponseEntity.ok(operationService.changeOperationDescription(id, description));
+    public ResponseEntity<OperationDTO> changeDescription(@NonNull @PathVariable(value = "id") Integer id,
+                                                          @NonNull @RequestBody String description) {
+        return ResponseEntity.ok(operationService.changeDescription(id, description));
     }
 
     @PutMapping("/{id}/changePrice")
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAnyAuthority('admin:update')")
-    public ResponseEntity<OperationDTO> changeOperationPrice(@NonNull @PathVariable(value = "id") Integer id,
-                                                             @NonNull @RequestBody Double price) {
-        return ResponseEntity.ok(operationService.changeOperationPrice(id, price));
+    public ResponseEntity<OperationDTO> changePrice(@NonNull @PathVariable(value = "id") Integer id,
+                                                    @NonNull @RequestBody Double price) {
+        return ResponseEntity.ok(operationService.changePrice(id, price));
     }
 
     @DeleteMapping("/{id}/delete")

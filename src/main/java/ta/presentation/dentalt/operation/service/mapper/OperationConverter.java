@@ -15,15 +15,4 @@ public class OperationConverter {
 
         return operationDTO;
     }
-
-    public static OperationEntity createOperationEntity(OperationDTO operationDTO) {
-        OperationEntity operationEntity = new OperationEntity();
-
-        operationEntity.setName(operationDTO.getName());
-        operationEntity.setDescription(operationDTO.getDescription());
-        operationEntity.setPrice(operationDTO.getPrice());
-        operationEntity.setValidity(Boolean.TRUE);
-
-        return operationEntity;
-    }
 }
