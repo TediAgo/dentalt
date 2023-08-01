@@ -18,8 +18,6 @@ public interface OfferService {
 
     OfferDTO changeDate(Integer id, OfferNewDateDTO newDate);
 
-    OfferDTO changePrice(Integer id, Double price);
-
     OfferDTO addOperations(Integer id, List<OperationDTO> operations);
 
     OfferDTO removeOperation(Integer offerId, Integer operationId);

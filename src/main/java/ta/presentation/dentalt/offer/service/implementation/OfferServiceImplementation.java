@@ -15,6 +15,7 @@ import ta.presentation.dentalt.offer.service.services.OfferService;
 import ta.presentation.dentalt.operation.model.dto.OperationDTO;
 import ta.presentation.dentalt.offer.service.util.OfferUtil;
 
+import ta.presentation.dentalt.operation.model.entity.OperationEntity;
 import ta.presentation.dentalt.operation.repository.OperationRepository;
 
 import java.time.LocalDate;
@@ -78,6 +79,7 @@ public class OfferServiceImplementation implements OfferService {
         }
         offer.setCategory(categoryRepository.findById(offerDTO.getCategory().getId()).get());
         offer.setPrice(OfferUtil.calculateOfferPrice(offer.getOperations(), offer.getCategory()));
+        offer.setValidity(Boolean.TRUE);
 
         offerRepository.save(offer);
         return OfferConverter.convertOfferEntityToDTO(offer);
@@ -98,7 +100,7 @@ public class OfferServiceImplementation implements OfferService {
     @Override
     public OfferDTO changeDate(Integer id, OfferNewDateDTO newDate) {
         if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)
-                && newDate.getFinish().isAfter(newDate.getBegin())) {
+                && !newDate.getFinish().isBefore(newDate.getBegin())) {
             OfferEntity offer = offerRepository.findById(id).get();
             offer.setBegin(newDate.getBegin());
             offer.setFinish(newDate.getFinish());
@@ -110,25 +112,15 @@ public class OfferServiceImplementation implements OfferService {
     }
 
     @Override
-    public OfferDTO changePrice(Integer id, Double price) {
-        if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            OfferEntity offer = offerRepository.findById(id).get();
-            offer.setPrice(price);
-            offerRepository.save(offer);
-            return OfferConverter.convertOfferEntityToDTO(offer);
-        }
-        LOGGER.info("Offer not found.");
-        return new OfferDTO();
-    }
-
-    @Override
     public OfferDTO addOperations(Integer id, List<OperationDTO> operations) {
         if(offerRepository.findById(id).isPresent() && offerRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
             OfferEntity offer = offerRepository.findById(id).get();
+            List<OperationEntity> existingOperations = offer.getOperations();
             for (OperationDTO operationDTO: operations) {
                 offer.getOperations().addAll(
                         operationRepository.findAll().stream()
-                                .filter(operation -> operation.getId().equals(operationDTO.getId()) && operation.getValidity().equals(Boolean.TRUE))
+                                .filter(operation -> operation.getId().equals(operationDTO.getId()) && operation.getValidity().equals(Boolean.TRUE)
+                                        && !existingOperations.contains(operation))
                                 .collect(Collectors.toList()));
             }
             offer.setPrice(OfferUtil.calculateOfferPrice(offer.getOperations(), offer.getCategory()));

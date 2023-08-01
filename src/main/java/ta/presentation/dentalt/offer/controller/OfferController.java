@@ -57,14 +57,6 @@ public class OfferController {
         return ResponseEntity.ok(offerService.changeDate(id, newDate));
     }
 
-    @PutMapping("/{id}/changePrice")
-    //@PreAuthorize("hasAnyRole('ADMIN')")
-    //@PreAuthorize(value = "hasAnyAuthority('admin:update')")
-    public ResponseEntity<OfferDTO> changePrice(@NonNull @PathVariable(value = "id") Integer id,
-                                                @NonNull @RequestBody Double price) {
-        return ResponseEntity.ok(offerService.changePrice(id, price));
-    }
-
     @PutMapping("/{id}/addOperations")
     //@PreAuthorize("hasAnyRole('ADMIN')")
     //@PreAuthorize(value = "hasAuthority('admin:update')")
