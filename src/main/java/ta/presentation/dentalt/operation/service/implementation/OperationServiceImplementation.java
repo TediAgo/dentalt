@@ -8,8 +8,8 @@ import ta.presentation.dentalt.appointment.service.implementation.AppointmentSer
 import ta.presentation.dentalt.operation.repository.OperationRepository;
 import ta.presentation.dentalt.operation.model.dto.OperationDTO;
 import ta.presentation.dentalt.operation.model.entity.OperationEntity;
-import ta.presentation.dentalt.operation.service.mapper.OperationConverter;
-import ta.presentation.dentalt.operation.service.services.OperationService;
+import ta.presentation.dentalt.operation.model.mapper.OperationConverter;
+import ta.presentation.dentalt.operation.service.OperationService;
 
 import java.util.List;
 import java.util.stream.Collectors;

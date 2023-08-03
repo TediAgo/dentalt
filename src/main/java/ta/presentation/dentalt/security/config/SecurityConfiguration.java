@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -12,12 +13,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import static ta.presentation.dentalt.user.model.enums.Role.*;
-import static ta.presentation.dentalt.user.model.enums.Permission.*;
-import static org.springframework.http.HttpMethod.*;
+//import static ta.presentation.dentalt.user.model.enums.Role.*;
+//import static ta.presentation.dentalt.user.model.enums.Permission.*;
+//import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
@@ -46,7 +48,7 @@ public class SecurityConfiguration {
                         "/swagger-ui.html"
                 )
                 .permitAll()
-                //.requestMatchers("/operations/**").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
+                /*.requestMatchers("/operations/**").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
                 .requestMatchers(GET, "/operations/{id}").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
                 .requestMatchers(GET, "/operations/all").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
                 .requestMatchers(POST, "/operations/create").hasAnyRole(ADMIN.name())
@@ -57,7 +59,7 @@ public class SecurityConfiguration {
                 .requestMatchers(DELETE, "/operations/{id}/delete").hasAnyRole(ADMIN.name())
                 .requestMatchers(PUT, "/operations/{id}/restore").hasAnyRole(ADMIN.name())
 
-                //.requestMatchers("/user/**").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
+                .requestMatchers("/user/**").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
                 .requestMatchers(GET, "/user/{id}").hasAnyRole(ADMIN.name(), DOCTOR.name())
                 .requestMatchers(GET, "/user/allPatients").hasAnyRole(ADMIN.name(), DOCTOR.name())
                 .requestMatchers(GET, "/user/allDoctors").hasAnyRole(ADMIN.name(), DOCTOR.name(), DOCTOR.name())
@@ -65,7 +67,7 @@ public class SecurityConfiguration {
                 .requestMatchers(POST, "/user/createDoctor").hasAnyRole(ADMIN.name())
                 .requestMatchers(POST, "/user/createAdmin").hasAnyRole(ADMIN.name())
 
-                //.requestMatchers("/appointments/**").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
+                .requestMatchers("/appointments/**").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
                 .requestMatchers(GET, "/appointments/{id}").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
                 .requestMatchers(GET, "/appointments/allUncompleted/{patientId}").hasAnyRole(ADMIN_READ.name(), DOCTOR.name())
                 .requestMatchers(GET, "/appointments/allUnpaid/{patientId}").hasAnyRole(ADMIN.name(), DOCTOR.name())
@@ -83,7 +85,7 @@ public class SecurityConfiguration {
                 .requestMatchers(PUT, "/appointments/{id}/changePaymentStatus").hasAnyRole(DOCTOR.name())
                 .requestMatchers(DELETE, "/appointments/{id}/delete").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
 
-                //.requestMatchers("/category/**").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
+                .requestMatchers("/category/**").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
                 .requestMatchers(GET, "/category/{id}").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
                 .requestMatchers(GET, "/category/all").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
                 .requestMatchers(POST, "/category/create").hasAnyRole(ADMIN.name())
@@ -93,7 +95,7 @@ public class SecurityConfiguration {
                 .requestMatchers(PUT, "/category/{id}/delete").hasAnyRole(ADMIN.name())
                 .requestMatchers(PUT, "/category/{id}/restore").hasAnyRole(ADMIN.name())
 
-                //.requestMatchers("/offers/**").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
+                .requestMatchers("/offers/**").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
                 .requestMatchers(GET, "/offers/{id}").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
                 .requestMatchers(GET, "/offers/all").hasAnyRole(ADMIN.name(), DOCTOR.name(), PATIENT.name())
                 .requestMatchers(POST, "/offers/create").hasAnyRole(ADMIN.name())
@@ -105,7 +107,7 @@ public class SecurityConfiguration {
                 .requestMatchers(PUT, "/offers/{id}/addCategories").hasAnyRole(ADMIN.name())
                 .requestMatchers(PUT, "/offers/{offerId}/removeCategory/{categoryId}").hasAnyRole(ADMIN.name())
                 .requestMatchers(PUT, "/offers/{id}/delete").hasAnyRole(ADMIN.name())
-                .requestMatchers(PUT, "/offers/{id}/restore").hasAnyRole(ADMIN.name())
+                .requestMatchers(PUT, "/offers/{id}/restore").hasAnyRole(ADMIN.name())*/
 
                 .anyRequest().authenticated()
                 .and()

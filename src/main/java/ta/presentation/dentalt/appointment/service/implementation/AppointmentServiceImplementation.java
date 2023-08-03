@@ -11,8 +11,8 @@ import ta.presentation.dentalt.appointment.model.entity.AppointmentEntity;
 import ta.presentation.dentalt.appointment.model.enums.CompletionStatus;
 import ta.presentation.dentalt.appointment.model.enums.PaymentStatus;
 import ta.presentation.dentalt.appointment.repository.AppointmentRepository;
-import ta.presentation.dentalt.appointment.service.mapper.AppointmentConverter;
-import ta.presentation.dentalt.appointment.service.services.AppointmentService;
+import ta.presentation.dentalt.appointment.model.mapper.AppointmentConverter;
+import ta.presentation.dentalt.appointment.service.AppointmentService;
 import ta.presentation.dentalt.appointment.service.util.AppointmentUtils;
 import ta.presentation.dentalt.operation.repository.OperationRepository;
 import ta.presentation.dentalt.user.repository.UserRepository;
@@ -149,7 +149,7 @@ public class AppointmentServiceImplementation implements AppointmentService {
                         && appointment.getValidity().equals(Boolean.TRUE))
                 .collect(Collectors.toList());
 
-        if (patientAppointments.size() > 0) {
+        if (!patientAppointments.isEmpty()) {
             LOGGER.info("Patient has Uncompleted Appointments.");
             return new AppointmentDTO();
         }

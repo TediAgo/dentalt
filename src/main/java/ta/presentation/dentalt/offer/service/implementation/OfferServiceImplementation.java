@@ -5,13 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ta.presentation.dentalt.appointment.service.implementation.AppointmentServiceImplementation;
-import ta.presentation.dentalt.category.repository.CategoryRepository;
+import ta.presentation.dentalt.offer.category.repository.CategoryRepository;
 import ta.presentation.dentalt.offer.model.dto.OfferDTO;
 import ta.presentation.dentalt.offer.model.dto.OfferNewDateDTO;
 import ta.presentation.dentalt.offer.model.entity.OfferEntity;
 import ta.presentation.dentalt.offer.repository.OfferRepository;
-import ta.presentation.dentalt.offer.service.mapper.OfferConverter;
-import ta.presentation.dentalt.offer.service.services.OfferService;
+import ta.presentation.dentalt.offer.model.mapper.OfferConverter;
+import ta.presentation.dentalt.offer.service.OfferService;
 import ta.presentation.dentalt.operation.model.dto.OperationDTO;
 import ta.presentation.dentalt.offer.service.util.OfferUtil;
 
@@ -61,7 +61,9 @@ public class OfferServiceImplementation implements OfferService {
             LOGGER.info("Operations not found.");
             return new OfferDTO();
         }
-        if(offerDTO.getCategory() == null) {
+        if(offerDTO.getCategory() == null
+                || !categoryRepository.findById(offerDTO.getCategory().getId()).isPresent()
+                || !offerRepository.findById(offerDTO.getCategory().getId()).get().getValidity().equals(Boolean.TRUE)) {
             LOGGER.info("Category not found.");
             return new OfferDTO();
         }

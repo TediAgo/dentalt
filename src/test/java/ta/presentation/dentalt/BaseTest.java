@@ -6,8 +6,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import ta.presentation.dentalt.auth.model.AuthenticationRequest;
-import ta.presentation.dentalt.auth.model.AuthenticationResponse;
+import ta.presentation.dentalt.security.auth.model.AuthenticationRequest;
+import ta.presentation.dentalt.security.auth.model.AuthenticationResponse;
 
 public class BaseTest {
 

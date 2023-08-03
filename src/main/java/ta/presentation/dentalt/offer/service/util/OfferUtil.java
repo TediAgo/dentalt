@@ -1,6 +1,6 @@
 package ta.presentation.dentalt.offer.service.util;
 
-import ta.presentation.dentalt.category.model.entity.CategoryEntity;
+import ta.presentation.dentalt.offer.category.model.entity.CategoryEntity;
 import ta.presentation.dentalt.operation.model.entity.OperationEntity;
 
 import java.util.List;

@@ -9,8 +9,8 @@ import ta.presentation.dentalt.user.repository.UserRepository;
 import ta.presentation.dentalt.user.model.enums.Role;
 import ta.presentation.dentalt.user.model.dto.UserDTO;
 import ta.presentation.dentalt.user.model.entity.UserEntity;
-import ta.presentation.dentalt.user.service.mapper.UserConverter;
-import ta.presentation.dentalt.user.service.services.UserService;
+import ta.presentation.dentalt.user.model.mapper.UserConverter;
+import ta.presentation.dentalt.user.service.UserService;
 
 import java.util.List;
 import java.util.stream.Collectors;
