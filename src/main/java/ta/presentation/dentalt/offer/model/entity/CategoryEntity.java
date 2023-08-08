@@ -1,4 +1,4 @@
-package ta.presentation.dentalt.offer.category.model.entity;
+package ta.presentation.dentalt.offer.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,6 +1,6 @@
-package ta.presentation.dentalt.offer.category.service;
+package ta.presentation.dentalt.offer.service;
 
-import ta.presentation.dentalt.offer.category.model.dto.CategoryDTO;
+import ta.presentation.dentalt.offer.model.dto.CategoryDTO;
 
 import java.util.List;
 

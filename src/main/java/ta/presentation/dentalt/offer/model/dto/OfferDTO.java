@@ -3,7 +3,6 @@ package ta.presentation.dentalt.offer.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ta.presentation.dentalt.offer.category.model.dto.CategoryDTO;
 import ta.presentation.dentalt.operation.model.dto.OperationDTO;
 
 import java.time.LocalDate;

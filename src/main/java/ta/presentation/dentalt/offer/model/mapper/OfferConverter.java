@@ -1,6 +1,5 @@
 package ta.presentation.dentalt.offer.model.mapper;
 
-import ta.presentation.dentalt.offer.category.model.mapper.CategoryConverter;
 import ta.presentation.dentalt.offer.model.dto.OfferDTO;
 import ta.presentation.dentalt.offer.model.entity.OfferEntity;
 import ta.presentation.dentalt.operation.model.mapper.OperationConverter;

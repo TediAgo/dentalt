@@ -1,4 +1,4 @@
-package ta.presentation.dentalt.offer.category.model.enums;
+package ta.presentation.dentalt.offer.model.enums;
 
 public enum Category {
 

@@ -1,4 +1,4 @@
-package ta.presentation.dentalt.offer.category.model.dto;
+package ta.presentation.dentalt.offer.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,12 +1,12 @@
-package ta.presentation.dentalt.offer.category.controller;
+package ta.presentation.dentalt.offer.controller;
 
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ta.presentation.dentalt.offer.category.model.dto.CategoryDTO;
-import ta.presentation.dentalt.offer.category.service.CategoryService;
+import ta.presentation.dentalt.offer.model.dto.CategoryDTO;
+import ta.presentation.dentalt.offer.service.CategoryService;
 
 import java.util.List;
 

@@ -2,7 +2,6 @@ package ta.presentation.dentalt.offer.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ta.presentation.dentalt.offer.category.model.entity.CategoryEntity;
 import ta.presentation.dentalt.operation.model.entity.OperationEntity;
 
 import java.time.LocalDate;

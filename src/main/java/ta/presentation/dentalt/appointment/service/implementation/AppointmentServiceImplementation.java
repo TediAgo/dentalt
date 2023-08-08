@@ -35,11 +35,11 @@ public class AppointmentServiceImplementation implements AppointmentService {
 
     @Override
     public AppointmentDTO getAppointment(Integer id) {
-        if(appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            return AppointmentConverter.convertAppointmentEntityToDTO(appointmentRepository.findById(id).get());
+        if(appointmentRepository.findById(id).isEmpty() || appointmentRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("Appointment not found.");
+            throw new RuntimeException("Appointment not found.");
         }
-        LOGGER.info("Appointment does not exist.");
-        return new AppointmentDTO();
+        return AppointmentConverter.convertAppointmentEntityToDTO(appointmentRepository.findById(id).get());
     }
 
     @Override
@@ -142,23 +142,19 @@ public class AppointmentServiceImplementation implements AppointmentService {
 
     @Override
     public AppointmentDTO applyForAppointmentByPatient(String loggedEmail, AppointmentDTO appointmentDTO) {
-
         List<AppointmentEntity> patientAppointments = appointmentRepository.findAll().stream()
                 .filter(appointment -> appointment.getPatientEntity().getEmail().equals(loggedEmail)
                         && appointment.getCompletionStatus().equals(CompletionStatus.UNCOMPLETED)
                         && appointment.getValidity().equals(Boolean.TRUE))
                 .collect(Collectors.toList());
-
         if (!patientAppointments.isEmpty()) {
             LOGGER.info("Patient has Uncompleted Appointments.");
-            return new AppointmentDTO();
+            throw new RuntimeException("Patient has Uncompleted Appointments.");
         }
-
-        if(!userRepository.findByEmail(appointmentDTO.getDoctor().getEmail()).isPresent() || !operationRepository.findById(appointmentDTO.getOperation().getId()).isPresent()) {
+        if(userRepository.findByEmail(appointmentDTO.getDoctor().getEmail()).isEmpty() || operationRepository.findById(appointmentDTO.getOperation().getId()).isEmpty()) {
             LOGGER.info("Doctor or Operation does not exist.");
-            return new AppointmentDTO();
+            throw new RuntimeException("Doctor or Operation does not exist.");
         }
-
         List<AppointmentEntity> doctorAppointments = appointmentRepository.findAll().stream()
                 .filter(appointment -> appointment.getDoctorEntity().getEmail().equals(appointmentDTO.getDoctor().getEmail())
                         && appointment.getCompletionStatus().equals(CompletionStatus.UNCOMPLETED)
@@ -167,9 +163,8 @@ public class AppointmentServiceImplementation implements AppointmentService {
 
         if(!AppointmentUtils.isDateTimeFree(appointmentDTO.getStartDateTime(), appointmentDTO.getEndDateTime(), doctorAppointments)) {
             LOGGER.info("Wrong Dates or Doctor may have another scheduled Appointment.");
-            return new AppointmentDTO();
+            throw new RuntimeException("Wrong Dates or Doctor may have another scheduled Appointment.");
         }
-
         appointmentDTO.getPatient().setId(userRepository.findByEmail(loggedEmail).get().getId());
         AppointmentEntity appointment = createAppointmentEntity(appointmentDTO, loggedEmail);
         appointmentRepository.save(appointment);
@@ -178,11 +173,10 @@ public class AppointmentServiceImplementation implements AppointmentService {
 
     @Override
     public AppointmentDTO createAppointmentByDoctor(String loggedEmail, AppointmentDTO appointmentDTO) {
-        if(!userRepository.findByEmail(appointmentDTO.getPatient().getEmail()).isPresent() || !operationRepository.findById(appointmentDTO.getOperation().getId()).isPresent()) {
+        if(userRepository.findByEmail(appointmentDTO.getPatient().getEmail()).isEmpty() || operationRepository.findById(appointmentDTO.getOperation().getId()).isEmpty()) {
             LOGGER.info("Patient or operation does not exist.");
-            return new AppointmentDTO();
+            throw new RuntimeException("Patient or operation does not exist.");
         }
-
         List<AppointmentEntity> doctorAppointments = appointmentRepository.findAll().stream()
                 .filter(appointment -> appointment.getDoctorEntity().getEmail().equals(loggedEmail)
                         && appointment.getCompletionStatus().equals(CompletionStatus.UNCOMPLETED)
@@ -190,9 +184,8 @@ public class AppointmentServiceImplementation implements AppointmentService {
                 .collect(Collectors.toList());
         if(!AppointmentUtils.isDateTimeFree(appointmentDTO.getStartDateTime(), appointmentDTO.getEndDateTime(), doctorAppointments)) {
             LOGGER.info("Doctor may have another scheduled appointment or wrong dates.");
-            return new AppointmentDTO();
+            throw new RuntimeException("Doctor may have another scheduled appointment or wrong dates.");
         }
-
         appointmentDTO.getDoctor().setId(userRepository.findByEmail(loggedEmail).get().getId());
         AppointmentEntity appointment = createAppointmentEntity(appointmentDTO, loggedEmail);
         appointmentRepository.save(appointment);
@@ -201,7 +194,6 @@ public class AppointmentServiceImplementation implements AppointmentService {
 
     public  AppointmentEntity createAppointmentEntity(AppointmentDTO appointmentDTO, String loggedEmail) {
         AppointmentEntity appointment = new AppointmentEntity();
-
         appointment.setStartDateTime(appointmentDTO.getStartDateTime());
         appointment.setEndDateTime(appointmentDTO.getEndDateTime());
         appointment.setCompletionStatus(CompletionStatus.UNCOMPLETED);
@@ -225,61 +217,60 @@ public class AppointmentServiceImplementation implements AppointmentService {
 
     @Override
     public AppointmentDTO changeDate(String loggedEmail, Integer id, AppointmentNewDateDTO newDate) {
-        if (appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            List<AppointmentEntity> doctorAppointments = appointmentRepository.findAll().stream()
-                    .filter(appointment -> appointment.getDoctorEntity().getEmail().equals(loggedEmail)
-                            && appointment.getCompletionStatus().equals(CompletionStatus.UNCOMPLETED)
-                            && appointment.getValidity().equals(Boolean.TRUE)
-                    )
-                    .collect(Collectors.toList());
-
-            if(AppointmentUtils.isDateTimeFree(newDate.getStartDateTime(), newDate.getEndDateTime(), doctorAppointments)) {
-                AppointmentEntity appointment = appointmentRepository.findById(id).get();
-                appointment.setStartDateTime(newDate.getStartDateTime());
-                appointment.setEndDateTime(newDate.getEndDateTime());
-                appointmentRepository.save(appointment);
-                return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
-            }
-            LOGGER.info("Doctor may have another scheduled appointment or wrong dates.");
-            return new AppointmentDTO();
+        if (appointmentRepository.findById(id).isEmpty() || appointmentRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("Appointment not found.");
+            throw new RuntimeException("Appointment not found.");
         }
-        LOGGER.info("Appointment does not exist.");
-        return new AppointmentDTO();
+        List<AppointmentEntity> doctorAppointments = appointmentRepository.findAll().stream()
+                .filter(appointment -> appointment.getDoctorEntity().getEmail().equals(loggedEmail)
+                        && appointment.getCompletionStatus().equals(CompletionStatus.UNCOMPLETED)
+                        && appointment.getValidity().equals(Boolean.TRUE)
+                )
+                .collect(Collectors.toList());
+        if(!AppointmentUtils.isDateTimeFree(newDate.getStartDateTime(), newDate.getEndDateTime(), doctorAppointments)) {
+            LOGGER.info("Doctor may have another scheduled appointment or wrong dates.");
+            throw new RuntimeException("Doctor may have another scheduled appointment or wrong dates.");
+        }
+        AppointmentEntity appointment = appointmentRepository.findById(id).get();
+        appointment.setStartDateTime(newDate.getStartDateTime());
+        appointment.setEndDateTime(newDate.getEndDateTime());
+        appointmentRepository.save(appointment);
+        return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
     }
 
     @Override
     public AppointmentDTO changeCompletionStatus(Integer id) {
-        if (appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            AppointmentEntity appointment = appointmentRepository.findById(id).get();
-            appointment.setCompletionStatus(CompletionStatus.COMPLETED);
-            appointmentRepository.save(appointment);
-            return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
+        if (appointmentRepository.findById(id).isEmpty() || appointmentRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("Appointment not found.");
+            throw new RuntimeException("Appointment not found.");
         }
-        LOGGER.info("Appointment does not exist.");
-        return new AppointmentDTO();
+        AppointmentEntity appointment = appointmentRepository.findById(id).get();
+        appointment.setCompletionStatus(CompletionStatus.COMPLETED);
+        appointmentRepository.save(appointment);
+        return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
     }
 
     @Override
     public AppointmentDTO changePaymentStatus(Integer id) {
-        if (appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            AppointmentEntity appointment = appointmentRepository.findById(id).get();
-            appointment.setPaymentStatus(PaymentStatus.PAID);
-            appointmentRepository.save(appointment);
-            return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
+        if (appointmentRepository.findById(id).isEmpty() || appointmentRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("Appointment not found.");
+            throw new RuntimeException("Appointment not found.");
         }
-        LOGGER.info("Appointment does not exist.");
-        return new AppointmentDTO();
+        AppointmentEntity appointment = appointmentRepository.findById(id).get();
+        appointment.setPaymentStatus(PaymentStatus.PAID);
+        appointmentRepository.save(appointment);
+        return AppointmentConverter.convertAppointmentEntityToDTO(appointment);
     }
 
     @Override
     public Integer deleteAppointment(Integer id) {
-        if (appointmentRepository.findById(id).isPresent() && appointmentRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            AppointmentEntity appointment = appointmentRepository.findById(id).get();
-            appointment.setValidity(Boolean.FALSE);
-            appointmentRepository.save(appointment);
-            return id;
+        if (appointmentRepository.findById(id).isEmpty() || appointmentRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("Appointment not found.");
+            throw new RuntimeException("Appointment not found.");
         }
-        LOGGER.info("Appointment does not exist.");
-        return null;
+        AppointmentEntity appointment = appointmentRepository.findById(id).get();
+        appointment.setValidity(Boolean.FALSE);
+        appointmentRepository.save(appointment);
+        return id;
     }
 }

@@ -24,11 +24,11 @@ public class OperationServiceImplementation implements OperationService {
 
     @Override
     public OperationDTO getOperation(Integer id) {
-        if (operationRepository.findById(id).isPresent() && operationRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            return OperationConverter.convertOperationEntityToDTO(operationRepository.findById(id).get());
+        if (operationRepository.findById(id).isEmpty() || operationRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("Operation not found.");
+            throw new RuntimeException("Operation not found.");
         }
-        LOGGER.info("Operation not found.");
-        return new OperationDTO();
+        return OperationConverter.convertOperationEntityToDTO(operationRepository.findById(id).get());
     }
 
     @Override
@@ -53,75 +53,76 @@ public class OperationServiceImplementation implements OperationService {
 
     @Override
     public OperationDTO changeOperation(OperationDTO operationDTO) {
-        if (operationRepository.findById(operationDTO.getId()).isPresent() && operationRepository.findById(operationDTO.getId()).get().getValidity().equals(Boolean.TRUE)) {
-            OperationEntity operation = operationRepository.findById(operationDTO.getId()).get();
-            operation.setName(operationDTO.getName());
-            operation.setDescription(operationDTO.getDescription());
-            operation.setPrice(operationDTO.getPrice());
-            operationRepository.save(operation);
-            return OperationConverter.convertOperationEntityToDTO(operation);
+        if (operationRepository.findById(operationDTO.getId()).isEmpty() || operationRepository.findById(operationDTO.getId()).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("Operation not found.");
+            throw new RuntimeException("Operation not found.");
         }
-        LOGGER.info("Operation not found.");
-        return new OperationDTO();
+        OperationEntity operation = operationRepository.findById(operationDTO.getId()).get();
+        operation.setName(operationDTO.getName());
+        operation.setDescription(operationDTO.getDescription());
+        operation.setPrice(operationDTO.getPrice());
+        operationRepository.save(operation);
+        return OperationConverter.convertOperationEntityToDTO(operation);
     }
 
     @Override
     public OperationDTO changeName(Integer id, String name) {
-        if (operationRepository.findById(id).isPresent() && operationRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            OperationEntity operation = operationRepository.findById(id).get();
-            operation.setName(name);
-            operationRepository.save(operation);
-            return OperationConverter.convertOperationEntityToDTO(operation);
+        if (operationRepository.findById(id).isEmpty() || operationRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("Operation not found.");
+            throw new RuntimeException("Operation not found.");
         }
         LOGGER.info("Operation not found.");
-        return new OperationDTO();
+        OperationEntity operation = operationRepository.findById(id).get();
+        operation.setName(name);
+        operationRepository.save(operation);
+        return OperationConverter.convertOperationEntityToDTO(operation);
     }
 
     @Override
     public OperationDTO changeDescription(Integer id, String description) {
-        if (operationRepository.findById(id).isPresent() && operationRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            OperationEntity operation = operationRepository.findById(id).get();
-            operation.setDescription(description);
-            operationRepository.save(operation);
-            return OperationConverter.convertOperationEntityToDTO(operation);
+        if (operationRepository.findById(id).isEmpty() || operationRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("Operation not found.");
+            throw new RuntimeException("Operation not found.");
         }
-        LOGGER.info("Operation not found.");
-        return new OperationDTO();
+        OperationEntity operation = operationRepository.findById(id).get();
+        operation.setDescription(description);
+        operationRepository.save(operation);
+        return OperationConverter.convertOperationEntityToDTO(operation);
     }
 
     @Override
     public OperationDTO changePrice(Integer id, Double price) {
-        if (operationRepository.findById(id).isPresent() && operationRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            OperationEntity operation = operationRepository.findById(id).get();
-            operation.setPrice(price);
-            operationRepository.save(operation);
-            return OperationConverter.convertOperationEntityToDTO(operation);
+        if (operationRepository.findById(id).isEmpty() || operationRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("Operation not found.");
+            throw new RuntimeException("Operation not found.");
         }
-        LOGGER.info("Operation not found.");
-        return new OperationDTO();
+        OperationEntity operation = operationRepository.findById(id).get();
+        operation.setPrice(price);
+        operationRepository.save(operation);
+        return OperationConverter.convertOperationEntityToDTO(operation);
     }
 
     @Override
     public Integer deleteOperation(Integer id) {
-        if (operationRepository.findById(id).isPresent() && operationRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            OperationEntity operation = operationRepository.findById(id).get();
-            operation.setValidity(Boolean.FALSE);
-            operationRepository.save(operation);
-            return id;
+        if (operationRepository.findById(id).isEmpty() || operationRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("Operation not found.");
+            throw new RuntimeException("Operation not found.");
         }
-        LOGGER.info("Operation not found.");
-        return null;
+        OperationEntity operation = operationRepository.findById(id).get();
+        operation.setValidity(Boolean.FALSE);
+        operationRepository.save(operation);
+        return id;
     }
 
     @Override
     public OperationDTO restoreOperation(Integer id) {
-        if (operationRepository.findById(id).isPresent() && operationRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
-            OperationEntity operation = operationRepository.findById(id).get();
-            operation.setValidity(Boolean.TRUE);
-            operationRepository.save(operation);
-            return OperationConverter.convertOperationEntityToDTO(operation);
+        if (operationRepository.findById(id).isEmpty() || operationRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
+            LOGGER.info("Operation not found.");
+            throw new RuntimeException("Operation not found.");
         }
-        LOGGER.info("Operation not found.");
-        return new OperationDTO();
+        OperationEntity operation = operationRepository.findById(id).get();
+        operation.setValidity(Boolean.TRUE);
+        operationRepository.save(operation);
+        return OperationConverter.convertOperationEntityToDTO(operation);
     }
 }

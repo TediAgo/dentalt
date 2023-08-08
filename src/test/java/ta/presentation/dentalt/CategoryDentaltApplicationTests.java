@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
-import ta.presentation.dentalt.offer.category.model.dto.CategoryDTO;
+import ta.presentation.dentalt.offer.model.dto.CategoryDTO;
 import ta.presentation.dentalt.security.auth.model.AuthenticationRequest;
 
 @SpringBootTest(classes = DentaltApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

@@ -1,7 +1,7 @@
-package ta.presentation.dentalt.offer.category.model.mapper;
+package ta.presentation.dentalt.offer.model.mapper;
 
-import ta.presentation.dentalt.offer.category.model.dto.CategoryDTO;
-import ta.presentation.dentalt.offer.category.model.entity.CategoryEntity;
+import ta.presentation.dentalt.offer.model.dto.CategoryDTO;
+import ta.presentation.dentalt.offer.model.entity.CategoryEntity;
 
 public class CategoryConverter {
 

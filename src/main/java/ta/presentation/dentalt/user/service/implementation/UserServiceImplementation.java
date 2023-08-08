@@ -25,11 +25,11 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDTO getUser(Integer id) {
-        if (userRepository.findById(id).isPresent()  && userRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            return UserConverter.convertUserEntityToDTO(userRepository.findById(id).get());
+        if (userRepository.findById(id).isEmpty() || userRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("User not found.");
+            throw new RuntimeException("User not found.");
         }
-        LOGGER.info("User not found.");
-        return new UserDTO();
+        return UserConverter.convertUserEntityToDTO(userRepository.findById(id).get());
     }
 
     @Override
@@ -61,25 +61,25 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDTO createDoctor(Integer id) {
-        if(userRepository.findById(id).isPresent() && userRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            UserEntity userToDoctor = userRepository.findById(id).get();
-            userToDoctor.setRole(Role.DOCTOR);
-            userRepository.save(userToDoctor);
-            return UserConverter.convertUserEntityToDTO(userToDoctor);
+        if(userRepository.findById(id).isEmpty() || userRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("User not found.");
+            throw new RuntimeException("User not found.");
         }
-        LOGGER.info("User not found.");
-        return new UserDTO();
+        UserEntity userToDoctor = userRepository.findById(id).get();
+        userToDoctor.setRole(Role.DOCTOR);
+        userRepository.save(userToDoctor);
+        return UserConverter.convertUserEntityToDTO(userToDoctor);
     }
 
     @Override
     public UserDTO createAdmin(Integer id) {
-        if(userRepository.findById(id).isPresent() && userRepository.findById(id).get().getValidity().equals(Boolean.TRUE)) {
-            UserEntity userToAdmin = userRepository.findById(id).get();
-            userToAdmin.setRole(Role.ADMIN);
-            userRepository.save(userToAdmin);
-            return UserConverter.convertUserEntityToDTO(userToAdmin);
+        if(userRepository.findById(id).isEmpty() || userRepository.findById(id).get().getValidity().equals(Boolean.FALSE)) {
+            LOGGER.info("User not found.");
+            throw new RuntimeException("User not found.");
         }
-        LOGGER.info("User not found.");
-        return new UserDTO();
+        UserEntity userToAdmin = userRepository.findById(id).get();
+        userToAdmin.setRole(Role.ADMIN);
+        userRepository.save(userToAdmin);
+        return UserConverter.convertUserEntityToDTO(userToAdmin);
     }
 }
